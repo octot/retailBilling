@@ -1,0 +1,23 @@
+.item-details-table-container {
+    margin: 20px; /* Add some margin around the table */
+  }
+  
+  .item-details-table {
+    width: 100%; /* Ensure the table takes the full width of its container */
+    border-collapse: collapse; /* Collapse borders between table cells */
+  }
+  
+  .item-details-table th,
+  .item-details-table td {
+    padding: 8px; /* Add padding to table cells */
+    border: 1px solid #ddd; /* Add borders to table cells */
+  }
+  
+  .item-details-table th {
+    background-color: #f2f2f2; /* Add background color to table header cells */
+  }
+  
+  .item-details-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* Alternate row background color */
+  }
+  

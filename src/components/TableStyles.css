@@ -1,0 +1,25 @@
+.customer-details-headers {
+
+  font-weight: bold !important;
+  font-size:15px !important;;
+}
+
+.customer-details-Address {
+  width: 350px;
+}
+
+.CustomerDetailsTableRow:hover {
+  background-color: #f2f2f2;
+  /* Light grey background */
+}
+
+.Customer-Details-Main-Table,
+.customer-details-headers,
+.customer-details-headers-Values {
+  text-align: center !important;
+  border: 2px solid black !important;
+}
+.Customer-Details-Main-Table
+{
+  margin-top:10px;
+}
