@@ -31,8 +31,7 @@ const styles = StyleSheet.create({
         height: '45'
     },
     pageStyle: {
-        margin: '0',
-        height: 'auto',
+        height: '100vh',
         width: '100%',
         // border: '1 px solid black'
     },
@@ -58,20 +57,28 @@ const styles = StyleSheet.create({
     },
     termsOfSaleContainer: {
         borderTop: '1 px solid black',
-        width: '45%',
+        borderLeft: '1 px solid black',
+        width: '90vw',
         borderBottom: '1px solid black',
         borderRight: '1px solid black',
-        // backgroundColor:'red'
+        height: '90vh'
     },
-    termsOfSale: {
-        width: '90%',
+    detailTermsOfSaleContainer: {
+        // backgroundColor: 'black'
+    },
+
+    detailTermsOfSaleContainerAttributeKey: {
+        // textAlign: 'center',
+        fontSize: '18'
+        // fontWeight:'bold'
     },
     paymentDetailsContainer: {
         borderTop: '1 px solid black',
-        width: '45%',
+        width: '80vw',
         borderRight: '1px solid black',
         borderBottom: '1px solid black',
-        height: '100%'
+        borderLeft: '1px solid black',
+        height: '30vh'
     },
     paymentDetails: {
         width: '100%',

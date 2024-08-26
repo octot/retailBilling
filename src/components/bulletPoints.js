@@ -1,57 +1,10 @@
 import React, { useState } from 'react';
 import { Button, TextField } from '@mui/material';
-const BulletPointInput = () => {
-    const [inputText, setInputText] = useState('');
-    const [bulletPoints, setBulletPoints] = useState([]);
-    const [editingIndex, setEditingIndex] = useState(null)
-    const [editText, setEditText] = useState("")
-    const handleInputChange = (event) => {
-        setInputText(event.target.value);
-    };
-
-    const handleAddBulletPoint = () => {
-        if (inputText.trim()) {
-            setBulletPoints([...bulletPoints, inputText.trim()]);
-            setInputText(''); // Clear the input after adding
-        }
-    };
-    const handleKeyPress = (event) => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            handleAddBulletPoint();
-        }
-    }
-    const handleRemoveBulletPoint = (index) => {
-        const newBulletPoints = bulletPoints.filter(
-            (_, i) => i !== index);
-        setBulletPoints(newBulletPoints);
-    }
-    const handleEditBulletPoint = (index) => {
-        setEditingIndex(index)
-        setEditText(bulletPoints[index])
-    }
-
-    const handleSaveEdit = (index) => {
-        const updateBulletPoints = bulletPoints.map((point, i) => (i === index ? editText : point))
-        setBulletPoints(updateBulletPoints)
-        setEditingIndex(null)
-    }
-    const handleClearAll = () => {
-        setBulletPoints([]);
-    }
-    const handleKeyDown = (event, index) => {
-        if (event.key === 'Enter') {
-            handleSaveEdit(index)
-        }
-        else if (event.key === 'Escape') {
-            setEditingIndex(null)
-        }
-    }
-    console.log("bulletPoints ", bulletPoints)
+const BulletPointInput = ({ inputText, handleInputChange, handleKeyPress, bulletPoints, editingIndex, editText, setEditText, handleKeyDown, handleSaveEdit, handleEditBulletPoint, handleRemoveBulletPoint }) => {
     return (
         <div>
             <TextField
-                style={{ width: '35vw' }}
+                style={{ width: '25vw' }}
                 value={inputText}
                 onChange={handleInputChange}
                 onKeyPress={handleKeyPress}

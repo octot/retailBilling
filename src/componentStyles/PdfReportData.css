@@ -1,0 +1,18 @@
+.payment-details-box {
+    height: 50vh;
+    border: 1px solid black;
+    padding: 1.5rem;
+    margin-top: .6rem;
+    position: relative;
+    background-color: '#f9f9f9';
+    width: 70vw;
+}
+
+.close-button {
+    position: absolute;
+    top: .6rem;
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    cursor: pointer;
+}

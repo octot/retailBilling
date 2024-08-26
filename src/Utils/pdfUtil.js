@@ -62,4 +62,13 @@ export const getGstCellContainerValueMap = () => {
     ];
 };
 
-
+export const orderBulletPoints = (bulletPoints) => {
+    let orderedBulletList = []
+    let count = 1;
+    for (let i = 0; i < bulletPoints.length; ++i) {
+        orderedBulletList.push(`${count}) ${bulletPoints[i]}`)
+        count++
+    }
+    console.log("orderedBulletList ", orderedBulletList)
+    return orderedBulletList;
+}
