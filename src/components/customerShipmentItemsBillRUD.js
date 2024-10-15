@@ -5,25 +5,21 @@ import {
     TextField, Table, TableCell, TableRow, TableHead, TableBody, Paper, TableContainer
 } from '@mui/material'
 import { ToastContainer, toast } from 'react-toastify';
-
+import { URI } from './CONSTANTS'
 const CustomerShipmentItemsBillRUD = () => {
-    const URl = 'https://shiroenterprise.onrender.com/api'
-    // const URl='http://localhost:3001/api'
 
     const [existingCustomerShipmentItemsBillRUD, setExistingCustomerShipmentItemsBillRUD] = useState([]);
     const [searchBillNumber, setSearchBillNumber] = useState('')
-    const [selectCheckBoxes, setSelectCheckBoxes] = useState([])
-    const [checked, setChecked] = useState(false);
     useEffect(() => {
         const fetchCustomerShipmentItemsBillRUD = async () => {
-            const response = await fetch(`${URl}/getCustShipItemBillDetails`);
+            const response = await fetch(`${URI}/getCustShipItemBillDetails`);
             const data = await response.json();
             setExistingCustomerShipmentItemsBillRUD(data);
         };
         fetchCustomerShipmentItemsBillRUD();
     }, []);
 
-    console.log("existingCustomerShipmentItemsBillRUD", existingCustomerShipmentItemsBillRUD);
+    // console.log("existingCustomerShipmentItemsBillRUD", existingCustomerShipmentItemsBillRUD);
     const handleBillNumberChange = (event) => {
         setSearchBillNumber(event.target.value)
     }
@@ -33,9 +29,9 @@ const CustomerShipmentItemsBillRUD = () => {
         return billNoCheck && searchBill && billNoCheck.toLowerCase().includes(searchBill.toLowerCase())
     }
     )
-    console.log("filterBasedOnBillNumber ", filterBasedOnBillNumber)
+    // console.log("filterBasedOnBillNumber ", filterBasedOnBillNumber)
     const handleDeleteClick = async (id) => {
-        const response = await fetch(`${URl}/deleteCustShipItemBillDetails/${id}`, {
+        const response = await fetch(`${URI}/deleteCustShipItemBillDetails/${id}`, {
             method: 'DELETE'
         });
 
@@ -44,7 +40,7 @@ const CustomerShipmentItemsBillRUD = () => {
             setExistingCustomerShipmentItemsBillRUD(existingCustomerShipmentItemsBillRUD.filter((item) => item._id !== id));
         } else {
             toast.error('Error in customer deletion');
-            console.log('Error deleting customer data');
+            // console.log('Error deleting customer data');
         }
     };
     return (

@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import { styled } from '@mui/system';
 import '../componentStyles/customerDetails.css'
+import { URI } from './CONSTANTS'
 const ResponsiveTextField = styled(TextField)(({ theme }) => ({
   width: '100%',
   '@media (min-width: 600px)': {
@@ -16,8 +17,6 @@ const ResponsiveTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 const CustomerForm = () => {
-  const URl = 'https://shiroenterprise.onrender.com/api'
-  // const URl='http://localhost:3001/api'
   const [formData, setFormData] = useState({
     name: '',
     address: '',
@@ -33,8 +32,8 @@ const CustomerForm = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('url is ', `${URl}/customers`)
-    const response = await fetch(`${URl}/customers`, {
+    // console.log('URI is ', `${URI}/customers`)
+    const response = await fetch(`${URI}/customers`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -44,10 +43,10 @@ const CustomerForm = () => {
 
     if (response.ok) {
       toast.success('Customer data saved');
-      console.log('Customer data saved');
+      // console.log('Customer data saved');
     } else {
       toast.error('Error saving customer data');
-      console.log('Error saving customer data');
+      // console.log('Error saving customer data');
     }
     setFormData({
       name: '',

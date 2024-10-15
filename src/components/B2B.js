@@ -3,11 +3,9 @@ import { Grid, Typography, Container, TextField, Button, Box, Autocomplete } fro
 import { format } from 'date-fns';
 import axios from 'axios';
 import ItemsTable from './ItemsTable';
-import { styled } from '@mui/system';
 import '../componentStyles/B2B.css'
+import { URI } from './CONSTANTS'
 function B2B() {
-  const URl = 'https://shiroenterprise.onrender.com/api'
-  // const URl='http://localhost:3001/api'
   const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -19,7 +17,7 @@ function B2B() {
   });
   useEffect(() => {
     // Fetch existing customer details
-    axios.get(`${URl}/getExistingCustomerDetails`)
+    axios.get(`${URI}/getExistingCustomerDetails`)
       .then(response => {
         setCustomers(response.data);
       })

@@ -23,11 +23,13 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
       igstAmount: 0
     },
   ]);
+
+
   const [nextSlNo, setNextSlNo] = useState(2); // Start from 2 since the first item has slno 1
   const [gstTotalValues, setGstTotalValues] = useState({});
   const [gstType, setGstType] = useState('cgst_sgst'); // Set default to 'cgst_sgst'
   let [billNo, setBillNo] = useState('');
-
+  // console.log("gstTotalValuesState ", gstTotalValues)
   const changeBillNo = (event) => {
     setBillNo(event.target.value)
   }
@@ -80,7 +82,7 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
     setGstTotalValues(gstTotalAdded);
   }, [items]);
   function gstTotalCalculation(items) {
-    console.log("gstTotalCalculation ", items)
+    // console.log("gstTotalCalculation ", items)
     let gstTotal = {}
     let [cgstTotal, sgstTotal, igstTotal, rateTotal, gstTotalSum, roundOff, invoiceTotalInr] = [0, 0, 0, 0, 0, 0, 0];
     for (let i = 0; i < items.length; i++) {
@@ -117,10 +119,10 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
       roundOff,
       invoiceTotalInr
     };
-    console.log("output from gstTotal ", gstTotal)
+    // console.log("output from gstTotal ", gstTotal)
     return gstTotal;
   }
-
+  // console.log("itemsall ", items)
   return (
     <Container>
       <Grid container spacing={2} sx={{ marginTop: '20px' }}>
@@ -149,6 +151,7 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
         handleChange={handleChange}
         handleRemoveRow={handleRemoveRow}
         handleAddRow={handleAddRow}
+        gstTotalValues={gstTotalValues}
       />
       <TextField
         id="billNo"

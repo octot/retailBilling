@@ -1,18 +1,40 @@
-.payment-details-box {
-    height: 50vh;
-    border: 1px solid black;
-    padding: 1.5rem;
-    margin-top: .6rem;
-    position: relative;
-    background-color: '#f9f9f9';
-    width: 70vw;
+.payment-details-box{
+  height: 50vh;
+  border: 1px solid black;
+  padding: 1.5rem;
+  margin-top: 0.6rem;
+  position: relative;
+  background-color: "#f9f9f9";
+  width: 70vw;
+}
+.bullet-points-box{
+  border: 1px solid black;
 }
 
 .close-button {
-    position: absolute;
-    top: .6rem;
-    background: none;
-    border: none;
-    font-size: 2.5rem;
-    cursor: pointer;
+  position: absolute;
+  top: 0rem;
+  background: none;
+  border: none;
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+
+.close-button-terms {
+  position: absolute;
+  top: 0rem;
+  background: none;
+  border: none;
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+.dialog-image-previewer-close-button {
+  position: absolute;
+  background: none;
+  border: none;
+  font-size: 2.5rem;
+  cursor: pointer;
+  top: 0;
+  right: 150px;
+  padding: 10px;
 }

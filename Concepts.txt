@@ -1,0 +1,16 @@
+What is Middleware?
+Definition: Middleware is a function or a series of functions that are executed during the request-response cycle in a web application. Middleware functions have access to the request object (req), the response object (res), and the next function in the application’s request-response cycle.
+
+Purpose:
+Processing Requests: Middleware functions can modify the request object, perform operations before the request reaches the route handler, or handle various tasks.
+Managing Responses: Middleware functions can modify the response object before sending it to the client or handle errors.
+Implementing Features: Middleware is often used to implement features like authentication, logging, body parsing, error handling, and more.
+How Middleware Works
+Request Flow:
+
+Incoming Request: When a request is made to a server, it passes through a series of middleware functions before reaching the route handler.
+Middleware Execution: Each middleware function can process the request, modify it, or terminate it.
+Passing Control: Middleware functions call the next function to pass control to the next middleware function in the stack. If a middleware function doesn’t call next, it can end the request-response cycle.
+Response Flow:
+
+Response Handling: After the request has been processed by the route handler, the response can be passed through more middleware functions before being sent to the client.

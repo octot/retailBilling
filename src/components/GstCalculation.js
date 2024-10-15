@@ -14,7 +14,7 @@ const GstCalculation = ({ item, index, setItems }) => {
     roundedRateTotal: 0,
     invoiceTotal: 0,
   });
-  console.log("gstTypegstDetails ", gstDetails.gstType);
+  // console.log("gstTypegstDetails ", gstDetails.gstType);
   useEffect(() => {
     calculateGST();
   }, [item.total, gstDetails.cgstRate,
@@ -74,7 +74,7 @@ const GstCalculation = ({ item, index, setItems }) => {
     }));
   };
   // gstDetails.gstType,
-  console.log("gstType ", gstDetails.gstType)
+  // console.log("gstType ", gstDetails.gstType)
   return (
     <Container>
       <Typography variant="h4" component="h2" gutterBottom>

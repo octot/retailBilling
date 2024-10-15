@@ -60,7 +60,6 @@ export const CommonFields = ({ item, index, handleChange }) => (
         />
     </>
 );
-
 // CGST/SGST specific fields
 export const CgstSgstFields = ({ item, index, handleChange }) => (
     <>
@@ -132,4 +131,13 @@ export const AddRowButton = ({ onClick }) => (
             Add Row
         </Button>
     </Grid>
+);
+
+export const GstTotalFields = ({ fieldKey, value }) => (
+    <>
+        <ItemTextField
+            label={fieldKey}
+            value={value}
+        />
+    </>
 );

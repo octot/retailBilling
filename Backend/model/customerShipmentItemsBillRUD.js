@@ -1,4 +1,3 @@
-// models/Order.js
 const mongoose = require('mongoose');
 const orderSchema = new mongoose.Schema({
     items: { type: Array },
@@ -9,4 +8,4 @@ const orderSchema = new mongoose.Schema({
     billNo: { type: String }
 });
 
-module.exports = mongoose.model('customerShipmentItemsBillRUD', orderSchema);
+module.exports = mongoose.model('customerShipmentItemsBillCRUD', orderSchema);

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Container, Typography, Button, TextField, Box } from '@mui/material';
 import './TableStyles.css';
+import { URI } from './CONSTANTS'
 function ExistingCustomerDetails() {
-  const URl='https://shiroenterprise.onrender.com/api'
-  // const URl='http://localhost:3001/api'
   const [customers, setCustomers] = useState([]);
   const [editId, setEditId] = useState(null);
   const [editFormData, setEditFormData] = useState({
@@ -15,7 +14,7 @@ function ExistingCustomerDetails() {
   const [search, setSearch] = useState('');
   useEffect(() => {
     const fetchCustomers = async () => {
-      const response = await fetch(`${URl}/getExistingCustomerDetails`);
+      const response = await fetch(`${URI}/getExistingCustomerDetails`);
       const data = await response.json();
       setCustomers(data);
     };
@@ -38,7 +37,7 @@ function ExistingCustomerDetails() {
     });
   };
   const handleSaveClick = async (id) => {
-    const response = await fetch(`${URl}/editExistingCustomerDetails/${id}`, {
+    const response = await fetch(`${URI}/editExistingCustomerDetails/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -53,18 +52,18 @@ function ExistingCustomerDetails() {
       setCustomers(updatedCustomers);
       setEditId(null);
     } else {
-      console.log('Error saving customer data');
+      // console.log('Error saving customer data');
     }
   };
   const handleDeleteClick = async (id) => {
-    const response = await fetch(`${URl}/deleteExistingCustomerDetails/${id}`, {
+    const response = await fetch(`${URI}/deleteExistingCustomerDetails/${id}`, {
       method: 'DELETE'
     });
 
     if (response.ok) {
       setCustomers(customers.filter((customer) => customer._id !== id));
     } else {
-      console.log('Error deleting customer data');
+      // console.log('Error deleting customer data');
     }
   };
   const handleSearchChange = (e) => {
