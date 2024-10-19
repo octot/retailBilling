@@ -1,0 +1,12 @@
+.gst-calculation-table
+{
+    border: 1px solid black;
+}
+
+.gst-calculation-table-headers {
+    margin-top: 2px;
+    border: 1px solid red;
+    display: flex;
+    flex-direction: row;
+    gap: 35px;
+}

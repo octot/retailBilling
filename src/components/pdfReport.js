@@ -14,14 +14,12 @@ const PdfReport = ({
   gstTotalList,
   paymentDetailsInfo,
   orderedBulletPoints,
-  
 }) => {
-  
-  console.log("imageFROmPDF ", image)
-  console.log("itemsInPiecesListFromPDF ", itemsInPiecesList)
+  // console.log("imageFROmPDF ", image)
+  // console.log("itemsInPiecesListFromPDF ", itemsInPiecesList)
 
-  // console.log("orderedBulletPoints001 ", orderedBulletPoints)
-  // console.log(" paymentDetailsInfo_value  ", paymentDetailsInfo)
+  // // console.log("orderedBulletPoints001 ", orderedBulletPoints)
+  // // console.log(" paymentDetailsInfo_value  ", paymentDetailsInfo)
   return (
     <Document>
       {itemsInPiecesList.map((itemsInPieces, index) => (
@@ -131,7 +129,7 @@ const PdfReport = ({
                     styles.boldRobotFont,
                   ]}
                 >
-                  SL No
+                  Item Name
                 </Text>
                 <Text
                   style={[
@@ -199,7 +197,7 @@ const PdfReport = ({
               {itemsInPieces.map((item, index) => (
                 <View key={index} style={styles.tableRow}>
                   <Text style={[styles.tableCell, styles.slnoCell]}>
-                    {item.slno}
+                    {item.itemName}
                   </Text>
                   <Text style={[styles.tableCell, styles.descriptionCell]}>
                     {item.description}
@@ -289,7 +287,7 @@ const PdfReport = ({
         </Page>
       )}
       {orderedBulletPoints && orderedBulletPoints.length > 0 && (
-        // console.log('orderedBulletPoints.length ', orderedBulletPoints.length),
+        // // console.log('orderedBulletPoints.length ', orderedBulletPoints.length),
         <Page size="A4" style={styles.page}>
           <View style={styles.termsOfSaleContainer}>
             <Text style={{ textAlign: "center", fontSize: "36" }}>

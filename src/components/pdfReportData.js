@@ -71,7 +71,7 @@ const PdfReportData = ({
   const [editText, setEditText] = useState("");
   const [isbulletPointsVisible, setBulletPointsVisible] = useState(false);
   const [paymentDetailsOpen, setPaymentDetailsOpen] = useState(false);
-
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const handleBulletPointsOpen = () => {
     setBulletPointsVisible(true);
   };
@@ -92,7 +92,7 @@ const PdfReportData = ({
     }));
   };
   const paymentDetailsInfo = getPaymentDetails(paymentDetails);
-  console.log("paymentDetails1111", paymentDetails);
+  // console.log("paymentDetail s1111", paymentDetails);
   const combinedDataOfCustShipItemBill = {
     items: items,
     customerDetails: customerDetails,
@@ -114,7 +114,7 @@ const PdfReportData = ({
         }
       );
       const data = await custShipItemBillDetailsData.json();
-      // console.log("custShipItemBillDetailsData ", data)
+      // // console.log("custShipItemBillDetailsData ", data)
     } catch (err) {
       console.error(
         "Failed to fetch data from setCustShipItemBillDetails ",
@@ -174,7 +174,7 @@ const PdfReportData = ({
     try {
       if (!billNo) {
         billNo = await generateBillNumber();
-        console.log("billNo", billNo);
+        // console.log("billNo", billNo);
       }
       if (!billNo) {
         throw new Error("Failed to generate bill number");
@@ -200,20 +200,16 @@ const PdfReportData = ({
       // Create formData with the blob to upload
       const formData = new FormData();
       formData.append("pdf", pdfBlob, `${billNo}.pdf`);
-      // console.log('formData ', formData)
-      // Upload PDF to backend
       try {
         const response = await axios.post(`${URI}/pdf/upload`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        // Get the shareable URL from the backend response
         setShareUrl(response.data.shareUrl);
-        // console.log('PDF generated and shareable URL:', response.data.shareUrl);
       } catch (error) {
         console.error("Error uploading PDF:", error);
       }
       const url = URL.createObjectURL(pdfBlob);
-      console.log("url ", url);
+      // console.log("url ", url);
       const link = document.createElement("a");
       link.href = url;
       link.download = billNo;
@@ -246,7 +242,6 @@ const PdfReportData = ({
     };
     reader.readAsDataURL(file);
   }, []);
-
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: "image/*",
@@ -326,7 +321,7 @@ const PdfReportData = ({
     handleDialogClose();
   };
   const handlePaymentDetailsSubmit = async (e) => {
-    console.log("paymentDetailshandlePaymentDetailsSubmit", paymentDetails);
+    // console.log("paymentDetailshandlePaymentDetailsSubmit", paymentDetails);
 
     e.preventDefault();
     try {
@@ -341,7 +336,7 @@ const PdfReportData = ({
         throw new Error("Network response was not ok");
       }
       const fetchedData = await response.json();
-      console.log("Success", fetchedData);
+      // console.log("Success", fetchedData);
       alert("Saved Succesfully");
     } catch (error) {
       alert("Error Succesfully");
@@ -383,7 +378,7 @@ const PdfReportData = ({
   const handleClearAll = () => {
     setBulletPoints([]);
   };
-  console.log("beforebulletPoints", bulletPoints);
+  // console.log("beforebulletPoints", bulletPoints);
   const handleSave = () => {
     fetch(`${URI}/bulletPoints`, {
       method: "POST", // or 'PUT' if you are updating existing data
@@ -394,7 +389,7 @@ const PdfReportData = ({
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Bullet points saved:", data);
+        // console.log("Bullet points saved:", data);
         // Optionally, you can update the UI or state based on the response
       })
       .catch((error) => console.error("Error saving bullet points:", error));
@@ -403,18 +398,16 @@ const PdfReportData = ({
     if (!image) {
       return;
     }
-    const formData = new FormData();
-    console.log("handleSaveLogo ", image);
-    formData.append("file", image);
+    console.log("imageIs", image);
     try {
-      const response = axios.post(`${URI}/upload`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await axios.post(`${URI}/upload-base64`, { image: image });
       console.log("handleSaveLogoresponse ", response);
-
+      setUploadedImageUrl(response.data.imageUrl);
+      alert("Image uploaded successfully!");
       return response;
     } catch (error) {
       console.error("uploadFail", error);
+      alert("Image upload failed!");
     }
   };
   const handleKeyDown = (event, index) => {
@@ -513,7 +506,7 @@ const PdfReportData = ({
                     color="secondary"
                     onClick={handleSaveLogo}
                   >
-                    SaveImage
+                    SaveImages
                   </Button>
                   <Grid item xs={12}>
                     <Button

@@ -8,7 +8,7 @@ import GstForm from './GstForm';
 const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
   const [items, setItems] = useState([
     {
-      slno: 1,
+      itemName: '',
       description: '',
       hsnCode: '48130',
       qty: '',
@@ -23,9 +23,6 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
       igstAmount: 0
     },
   ]);
-
-
-  const [nextSlNo, setNextSlNo] = useState(2); // Start from 2 since the first item has slno 1
   const [gstTotalValues, setGstTotalValues] = useState({});
   const [gstType, setGstType] = useState('cgst_sgst'); // Set default to 'cgst_sgst'
   let [billNo, setBillNo] = useState('');
@@ -61,7 +58,7 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
     setItems([
       ...items,
       {
-        slno: nextSlNo, description: '', hsnCode: '48130', qty: '', rate: '', total: 0,
+        itemName: '', description: '', hsnCode: '48130', qty: '', rate: '', total: 0,
         gstType: '',
         cgstRate: 9,
         sgstRate: 9,
@@ -71,7 +68,6 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
         igstAmount: 0
       },
     ]);
-    setNextSlNo(nextSlNo + 1);
   };
   const handleRemoveRow = (index) => {
     const updatedItems = items.filter((_, i) => i !== index);
