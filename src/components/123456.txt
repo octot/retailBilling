@@ -1,0 +1,8 @@
+Item Name
+Description
+HSN CODE
+QTY
+Rate
+CGST(%)
+SGST(%)
+IGST Rate (%)

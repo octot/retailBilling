@@ -118,7 +118,16 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
     // console.log("output from gstTotal ", gstTotal)
     return gstTotal;
   }
-  // console.log("itemsall ", items)
+  const invoiceHeaders = [
+    { id: 'itemName', label: 'Item Name', align: 'left' },
+    { id: 'description', label: 'Description', align: 'left' },
+    { id: 'hsnCode', label: 'HSN CODE', align: 'center' },
+    { id: 'qty', label: 'QTY', align: 'right' },
+    { id: 'rate', label: 'Rate', align: 'right' },
+    { id: 'cgst', label: 'CGST(%)', align: 'right' },
+    { id: 'sgst', label: 'SGST(%)', align: 'right' },
+    { id: 'igst', label: 'IGST Rate (%)', align: 'right' }
+  ];
   return (
     <Container>
       <Grid container spacing={2} sx={{ marginTop: '20px' }}>
@@ -148,6 +157,7 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
         handleRemoveRow={handleRemoveRow}
         handleAddRow={handleAddRow}
         gstTotalValues={gstTotalValues}
+        invoiceHeaders={invoiceHeaders}
       />
       <TextField
         id="billNo"

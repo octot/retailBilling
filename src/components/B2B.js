@@ -85,11 +85,11 @@ function B2B() {
     <div className='B2BMain'>
       <Container>
         <Typography textAlign={'center'} variant="h4" component="h2" gutterBottom>
-          Customer Details
+          Add Customer Details
         </Typography>
         <Box component="form" sx={{ mt: 3 }} noValidate autoComplete="off">
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={6} md={4}>
               <Autocomplete
                 options={customers}
                 getOptionLabel={(option) => option.name}
@@ -175,10 +175,10 @@ function B2B() {
           >Clear Shipment Details</Button>
           <Typography sx={{ mt: 3, }}
             textAlign="center" variant="h4" component="h2" gutterBottom>
-            Shipment Details
+            Add Shipment Details
           </Typography>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={6} md={4}>
               <TextField
                 id="customerName"
                 label="Shipment Name"

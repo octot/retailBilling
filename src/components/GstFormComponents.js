@@ -3,6 +3,7 @@
 import React from "react";
 import { Grid, TextField, Button } from "@mui/material";
 import CloseButton from "./CloseButton";
+import PlusButton from '../buttons/plusButton'
 // Common TextField component to reduce repetition
 export const ItemTextField = ({
   fullWidth,
@@ -12,9 +13,9 @@ export const ItemTextField = ({
   readOnly = false,
   type = "text",
 }) => (
-  <Grid item xs={12} sm={1}>
+  <Grid item xs={12} sm={3}>
     <TextField
-      label={label}
+      // label={label}
       value={value}
       onChange={onChange}
       InputProps={{ readOnly }}
@@ -29,15 +30,18 @@ export const ItemTextField = ({
 // Common fields for both CGST/SGST and IGST
 export const CommonFields = ({ item, index, handleChange }) => (
   <>
-    <ItemTextField
-      label="Item Name"
-      fullWidth
-      value={item.itemName}
-      onChange={(e) => handleChange(index, "itemName", e.target.value)}
-    />
+    <Grid item xs={12} sm={2}>
+      <TextField
+        // label="Item Name"
+        value={item.itemName}
+        onChange={(e) => handleChange(index, "itemName", e.target.value)}
+        variant="standard"
+        margin="normal"
+      />
+    </Grid>
     <Grid item xs={12} sm={3}>
       <TextField
-        label="Description"
+        // label="Description"
         value={item.description}
         onChange={(e) => handleChange(index, "description", e.target.value)}
         fullWidth
@@ -92,11 +96,6 @@ export const IgstFields = ({ item, index, handleChange }) => (
       onChange={(e) => handleChange(index, "igstRate", e.target.value)}
       type="number"
     />
-    <ItemTextField
-      label="IGST Amount"
-      value={item.igstAmount.toFixed(2)}
-      readOnly
-    />
   </>
 );
 
@@ -117,14 +116,13 @@ export const RemoveButton = ({ onClick }) => (
 // Add Row Button component
 export const AddRowButton = ({ onClick }) => (
   <Grid item xs={12}>
-    <Button
+    <PlusButton
       variant="contained"
       color="primary"
       onClick={onClick}
       sx={{ mt: 2 }}
     >
-      Add Row
-    </Button>
+    </PlusButton>
   </Grid>
 );
 
