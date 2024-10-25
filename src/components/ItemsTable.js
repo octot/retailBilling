@@ -1,55 +1,85 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
-  Typography, Container, TextField, Button, Box, Grid,
-  FormControl, RadioGroup, FormControlLabel, Radio
-} from '@mui/material';
-import PdfReportData from './pdfReportData'
-import GstForm from './GstForm';
+  Typography,
+  Container,
+  TextField,
+  Button,
+  Box,
+  Grid,
+  FormControl,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from "@mui/material";
+import PdfReportData from "./pdfReportData";
+import GstForm from "./GstForm";
+import InvoiceDateDueDetails from "./invoiceDateDueDetails";
 const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
   const [items, setItems] = useState([
     {
-      itemName: '',
-      description: '',
-      hsnCode: '48130',
-      qty: '',
-      rate: '',
+      itemName: "",
+      description: "",
+      hsnCode: "48130",
+      qty: "",
+      rate: "",
       total: 0,
-      gstType: '',
+      gstType: "",
       cgstRate: 9,
       sgstRate: 9,
       igstRate: 0,
       cgstAmount: 0,
       sgstAmount: 0,
-      igstAmount: 0
+      igstAmount: 0,
     },
   ]);
+  console.log("items ", items);
   const [gstTotalValues, setGstTotalValues] = useState({});
-  const [gstType, setGstType] = useState('cgst_sgst'); // Set default to 'cgst_sgst'
-  let [billNo, setBillNo] = useState('');
+  const [gstType, setGstType] = useState("cgst_sgst"); // Set default to 'cgst_sgst'
+  let [billNo, setBillNo] = useState("");
   // console.log("gstTotalValuesState ", gstTotalValues)
   const changeBillNo = (event) => {
-    setBillNo(event.target.value)
-  }
+    setBillNo(event.target.value);
+  };
   const handleChange = (index, field, value) => {
     const updatedItems = [...items];
     updatedItems[index][field] = value;
-    if (field === 'qty' || field === 'rate' || field === 'cgstRate' || field === 'sgstRate' || field === 'igstRate') {
+    if (
+      field === "qty" ||
+      field === "rate" ||
+      field === "cgstRate" ||
+      field === "sgstRate" ||
+      field === "igstRate"
+    ) {
       const qty = parseFloat(updatedItems[index].qty) || 0;
       const rate = parseFloat(updatedItems[index].rate) || 0;
       updatedItems[index].total = Number((qty * rate).toFixed(2));
       if (gstType === "cgst_sgst") {
         updatedItems[index].igstRate = 0;
-        updatedItems[index].igstAmount = 0
-        updatedItems[index].cgstAmount = Number(((updatedItems[index].total * updatedItems[index].cgstRate) / 100).toFixed(2));
-        updatedItems[index].sgstAmount = Number(((updatedItems[index].total * updatedItems[index].sgstRate) / 100).toFixed(2));
+        updatedItems[index].igstAmount = 0;
+        updatedItems[index].cgstAmount = Number(
+          (
+            (updatedItems[index].total * updatedItems[index].cgstRate) /
+            100
+          ).toFixed(2)
+        );
+        updatedItems[index].sgstAmount = Number(
+          (
+            (updatedItems[index].total * updatedItems[index].sgstRate) /
+            100
+          ).toFixed(2)
+        );
       }
       if (gstType === "igst") {
         updatedItems[index].cgstRate = 0;
         updatedItems[index].sgstRate = 0;
-        updatedItems[index].cgstAmount = 0
-        updatedItems[index].sgstAmount = 0
-        updatedItems[index].igstAmount =
-          Number(((updatedItems[index].total * updatedItems[index].igstRate) / 100).toFixed(2));
+        updatedItems[index].cgstAmount = 0;
+        updatedItems[index].sgstAmount = 0;
+        updatedItems[index].igstAmount = Number(
+          (
+            (updatedItems[index].total * updatedItems[index].igstRate) /
+            100
+          ).toFixed(2)
+        );
       }
     }
     setItems(updatedItems);
@@ -58,14 +88,19 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
     setItems([
       ...items,
       {
-        itemName: '', description: '', hsnCode: '48130', qty: '', rate: '', total: 0,
-        gstType: '',
+        itemName: "",
+        description: "",
+        hsnCode: "48130",
+        qty: "",
+        rate: "",
+        total: 0,
+        gstType: "",
         cgstRate: 9,
         sgstRate: 9,
         igstRate: 0,
         cgstAmount: 0,
         sgstAmount: 0,
-        igstAmount: 0
+        igstAmount: 0,
       },
     ]);
   };
@@ -73,32 +108,35 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
     const updatedItems = items.filter((_, i) => i !== index);
     setItems(updatedItems);
   };
-  useEffect(() => {
-    let gstTotalAdded = gstTotalCalculation(items);
-    setGstTotalValues(gstTotalAdded);
-  }, [items]);
   function gstTotalCalculation(items) {
     // console.log("gstTotalCalculation ", items)
-    let gstTotal = {}
-    let [cgstTotal, sgstTotal, igstTotal, rateTotal, gstTotalSum, roundOff, invoiceTotalInr] = [0, 0, 0, 0, 0, 0, 0];
+    let gstTotal = {};
+    let [
+      cgstTotal,
+      sgstTotal,
+      igstTotal,
+      rateTotal,
+      gstTotalSum,
+      roundOff,
+      invoiceTotalInr,
+    ] = [0, 0, 0, 0, 0, 0, 0];
     for (let i = 0; i < items.length; i++) {
-      if (gstType === 'cgst_sgst') {
+      if (gstType === "cgst_sgst") {
         cgstTotal += items[i].cgstAmount;
         sgstTotal += items[i].sgstAmount;
       }
-      if (gstType === 'igst') {
+      if (gstType === "igst") {
         igstTotal += items[i].igstAmount;
       }
       rateTotal += items[i].total;
     }
     if (igstTotal > 0) {
-      gstTotalSum = igstTotal
-    }
-    else {
-      gstTotalSum = cgstTotal + sgstTotal
+      gstTotalSum = igstTotal;
+    } else {
+      gstTotalSum = cgstTotal + sgstTotal;
     }
     roundOff = Math.round(rateTotal);
-    invoiceTotalInr = roundOff + gstTotalSum
+    invoiceTotalInr = roundOff + gstTotalSum;
     cgstTotal = Number(cgstTotal.toFixed(2));
     sgstTotal = Number(sgstTotal.toFixed(2));
     igstTotal = Number(igstTotal.toFixed(2));
@@ -113,24 +151,84 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
       rateTotal,
       gstTotalSum,
       roundOff,
-      invoiceTotalInr
+      invoiceTotalInr,
     };
-    // console.log("output from gstTotal ", gstTotal)
+    console.log("output from gstTotal ", gstTotal);
     return gstTotal;
   }
+  useEffect(() => {
+    let gstTotalAdded = gstTotalCalculation(items);
+    setGstTotalValues(gstTotalAdded);
+  }, [items]);
   const invoiceHeaders = [
-    { id: 'itemName', label: 'Item Name', align: 'left' },
-    { id: 'description', label: 'Description', align: 'left' },
-    { id: 'hsnCode', label: 'HSN CODE', align: 'center' },
-    { id: 'qty', label: 'QTY', align: 'right' },
-    { id: 'rate', label: 'Rate', align: 'right' },
-    { id: 'cgst', label: 'CGST(%)', align: 'right' },
-    { id: 'sgst', label: 'SGST(%)', align: 'right' },
-    { id: 'igst', label: 'IGST Rate (%)', align: 'right' }
+    { id: "itemName", label: "Item Name", align: "left" },
+    { id: "description", label: "Description", align: "left" },
+    { id: "hsnCode", label: "HSN CODE", align: "center" },
+    { id: "qty", label: "QTY", align: "right" },
+    { id: "rate", label: "Rate", align: "right" },
+    { id: "cgst", label: "CGST(%)", align: "right" },
+    { id: "sgst", label: "SGST(%)", align: "right" },
+    { id: "igst", label: "IGST Rate (%)", align: "right" },
   ];
+
+  const [invoiceDate, setInvoiceDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [paymentTerms, setPaymentTerms] = useState("net30");
+  const [dueDate, setDueDate] = useState("");
+  const [earlyPaymentDate, setEarlyPaymentDate] = useState("");
+  const [discountAmount, setDiscountAmount] = useState(0);
+
+  const calculateDates = (date, terms) => {
+    const baseDate = new Date(date);
+    let dueDateValue = new Date(baseDate);
+    let earlyDate = new Date(baseDate);
+    let discount = 0;
+    switch (terms) {
+      case "net30":
+        dueDateValue.setDate(baseDate.getDate() + 30);
+        break;
+      case "net15":
+        dueDateValue.setDate(baseDate.getDate() + 15);
+        break;
+      case "net60":
+        dueDateValue.setDate(baseDate.getDate() + 60);
+        break;
+      case "eom":
+        dueDateValue = new Date(
+          baseDate.getFullYear(),
+          baseDate.getMonth() + 1,
+          0
+        );
+        break;
+      case "2/10net30":
+        dueDateValue.setDate(baseDate.getDate() + 30);
+        earlyDate.setDate(baseDate.getDate() + 10);
+        discount = 2;
+        break;
+      default:
+        dueDateValue = baseDate;
+    }
+    const newDueDate = dueDateValue.toISOString().split("T")[0];
+    const newEarlyPaymentDate = earlyDate.toISOString().split("T")[0];
+    setDueDate(newDueDate);
+    setEarlyPaymentDate(newEarlyPaymentDate);
+    setDiscountAmount(discount);
+  };
+  useEffect(() => {
+    calculateDates(invoiceDate, paymentTerms);
+  }, [invoiceDate, paymentTerms]);
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
   return (
     <Container>
-      <Grid container spacing={2} sx={{ marginTop: '20px' }}>
+      <Grid container spacing={2} sx={{ marginTop: "20px" }}>
         <FormControl component="fieldset">
           <RadioGroup
             aria-label="gst-type"
@@ -140,13 +238,20 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
           >
             <Grid container spacing={12}>
               <Grid item xs={12} sm={6} md={4}>
-                <FormControlLabel value="cgst_sgst" control={<Radio />} label="CGST&amp;SGST" />
+                <FormControlLabel
+                  value="cgst_sgst"
+                  control={<Radio />}
+                  label="CGST&amp;SGST"
+                />
               </Grid>
               <Grid item xs={12} sm={6} md={4}>
-                <FormControlLabel value="igst" control={<Radio />} label="IGST" />
+                <FormControlLabel
+                  value="igst"
+                  control={<Radio />}
+                  label="IGST"
+                />
               </Grid>
             </Grid>
-
           </RadioGroup>
         </FormControl>
       </Grid>
@@ -159,19 +264,29 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
         gstTotalValues={gstTotalValues}
         invoiceHeaders={invoiceHeaders}
       />
-      <TextField
-        id="billNo"
-        label="BillNo"
-        variant="outlined"
-        value={billNo}
-        onChange={changeBillNo}
-        fullWidth
-        margin="normal"
-      />
+      <div style={{ marginTop: "2rem" }}>
+        <InvoiceDateDueDetails
+          invoiceDate={invoiceDate}
+          setInvoiceDate={setInvoiceDate}
+          setPaymentTerms={setPaymentTerms}
+          dueDate={dueDate}
+          earlyPaymentDate={earlyPaymentDate}
+          discountAmount={discountAmount}
+          formatDate={formatDate}
+          billNo={billNo}
+          setBillNo={setBillNo}
+        />
+      </div>
+
       <div>
-        <PdfReportData items={items} customerDetails={customerDetails}
-          date={date} shipmentDetails={shipmentDetails}
-          gstTotalValues={gstTotalValues} billNo={billNo} />
+        <PdfReportData
+          items={items}
+          customerDetails={customerDetails}
+          date={date}
+          shipmentDetails={shipmentDetails}
+          gstTotalValues={gstTotalValues}
+          billNo={billNo}
+        />
       </div>
     </Container>
   );

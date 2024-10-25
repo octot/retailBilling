@@ -10,9 +10,7 @@
   flex-direction: row;
   gap: 35px;
 }
-.add-row-button {
-  text-align: center;
-}
+
 .custom-table-container {
   overflow-x: auto;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
@@ -27,9 +25,9 @@
   background-color: #1976d2;
 }
 
-.custom-table-cell {
+.invoice-table-header {
+  height: 4rem;
   padding: 16px;
-  color: white;
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -38,7 +36,79 @@
   background-color: #fff;
   transition: background-color 0.3s;
 }
+.invoice-table-elements-data {
+  display: flex;
+  flex-direction: row;
+}
 
 .custom-table-row:hover {
   background-color: #f0f0f0;
+}
+.invoice-table-header {
+  padding: 8px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.invoice-table-header.itemName {
+  width: 15%;
+}
+
+.invoice-table-header.description {
+  width: 25%;
+}
+
+.invoice-table-header.hsnCode {
+  width: 10%;
+}
+
+.invoice-table-header.qty {
+  width: 10%;
+}
+
+.invoice-table-header.rate {
+  width: 10%;
+}
+
+.invoice-table-header.cgst {
+  width: 10%;
+}
+
+.invoice-table-header.sgst {
+  width: 10%;
+}
+
+.invoice-table-header.igst {
+  width: 10%;
+}
+
+.invoice-table-header.itemName,
+.invoice-table-header.description,
+.invoice-table-header.hsnCode,
+.invoice-table-header.qty,
+.invoice-table-header.rate,
+.invoice-table-header.cgst,
+.invoice-table-header.sgst,
+.invoice-table-header.igst {
+  font-size: 17px; /* Ensure consistent font size */
+}
+.add-row-button {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  background-color: aquamarine;
+}
+.adder {
+  background-color: black;
+}
+.custom-table-totalInr-row {
+  background-color: rgb(203, 156, 156);
+  display: flex;
+  width: 100% !important;
+}
+.invoice-table-totalInr.INR {
+  text-align: right;
+}
+.invoice-table-totalInr.INR-Value {
+  text-align: right;
 }

@@ -8,7 +8,8 @@ import {
   TableHead,
   TableRow,
   TableCell,
-  TableBody
+  TableBody,
+  TextField,
 } from "@mui/material";
 import {
   GstTotalFields,
@@ -26,83 +27,201 @@ const GstForm = ({
   handleRemoveRow,
   handleAddRow,
   gstTotalValues,
-  invoiceHeaders,
 }) => (
   <div>
     <TableContainer component={Paper} className="custom-table-container">
       <Table className="custom-table" aria-label="customizable table">
         <TableHead className="custom-table-head">
           <TableRow>
-            {invoiceHeaders.map((header) => {
-              if (gstType === "cgst_sgst" && header.id === "igstRate") {
-                return null; // Don't render igstRate if gstType is cgst_sgst
-              }
-              if (
-                gstType !== "cgst_sgst" &&
-                (header.id === "cgst" || header.id === "sgst")
-              ) {
-                return null; // Don't render cgst or sgst if gstType is not cgst_sgst
-              }
-              return (
-                <TableCell
-                  key={header.id}
-                  align={header.align}
-                  className="custom-table-cell"
-                >
-                  {header.label}
+            <TableCell className="invoice-table-header itemName">
+              item Name
+            </TableCell>
+            <TableCell className="invoice-table-header description">
+              description
+            </TableCell>
+            <TableCell className="invoice-table-header hsnCode">
+              hsnCode
+            </TableCell>
+            <TableCell className="invoice-table-header qty">qty</TableCell>
+            <TableCell className="invoice-table-header rate">rate</TableCell>
+            {gstType == "cgst_sgst" ? (
+              <>
+                <TableCell className="invoice-table-header cgst">
+                  cgst
                 </TableCell>
-              );
-            })}
+                <TableCell className="invoice-table-header sgst">
+                  sgst
+                </TableCell>
+              </>
+            ) : (
+              <TableCell className="invoice-table-header igst">igst</TableCell>
+            )}
+            <TableCell className="invoice-table-header amount">
+              Amount
+            </TableCell>
+            <TableCell
+              className="invoice-table-header action"
+              style={{ textAlign: "center" }}
+            >
+              Action
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-        <TableRow className="custom-table-row">
-        {items.map((item, index) => (
-          <Box key={index}>
-            <Grid container spacing={4}>
-              <CommonFields
-                item={item}
-                index={index}
-                handleChange={handleChange}
-              />
-              {gstType === "cgst_sgst" ? (
-                <CgstSgstFields
-                  item={item}
-                  index={index}
-                  handleChange={handleChange}
+          {items.map((item, index) => (
+            <TableRow className="custom-table-row" key={index}>
+              <TableCell className="invoice-table-row">
+                <TextField
+                  label="Item Name"
+                  value={item.itemName}
+                  onChange={(e) =>
+                    handleChange(index, "itemName", e.target.value)
+                  }
+                  variant="standard"
+                  margin="normal"
+                  fullWidth
                 />
+              </TableCell>
+              <TableCell className="invoice-table-row">
+                <TextField
+                  label="Description"
+                  value={item.description}
+                  onChange={(e) =>
+                    handleChange(index, "description", e.target.value)
+                  }
+                  variant="standard"
+                  margin="normal"
+                />
+              </TableCell>
+              <TableCell className="invoice-table-row">
+                <TextField
+                  label="hsnCode"
+                  value={item.hsnCode}
+                  onChange={(e) =>
+                    handleChange(index, "hsnCode", e.target.value)
+                  }
+                  variant="standard"
+                  margin="normal"
+                  fullWidth
+                />
+              </TableCell>
+              <TableCell className="invoice-table-row">
+                <TextField
+                  label="qty"
+                  value={item.qty}
+                  onChange={(e) => handleChange(index, "qty", e.target.value)}
+                  variant="standard"
+                  margin="normal"
+                  fullWidth
+                />
+              </TableCell>
+              <TableCell className="invoice-table-row">
+                <TextField
+                  label="rate"
+                  value={item.rate}
+                  onChange={(e) => handleChange(index, "rate", e.target.value)}
+                  variant="standard"
+                  margin="normal"
+                  fullWidth
+                />
+              </TableCell>
+              {gstType == "cgst_sgst" ? (
+                <>
+                  <TableCell className="invoice-table-row">
+                    <TextField
+                      label="cgst(%)"
+                      value={item.cgstRate}
+                      onChange={(e) =>
+                        handleChange(index, "cgstRate", e.target.value)
+                      }
+                      variant="standard"
+                      margin="normal"
+                      fullWidth
+                    />
+                  </TableCell>
+                  <TableCell className="invoice-table-row">
+                    <TextField
+                      label="sgst(%)"
+                      value={item.sgstRate}
+                      onChange={(e) =>
+                        handleChange(index, "sgstRate", e.target.value)
+                      }
+                      variant="standard"
+                      margin="normal"
+                      fullWidth
+                    />
+                  </TableCell>
+                  <TableCell className="invoice-table-row">
+                    <TextField
+                      label="Amount"
+                      value={item.cgstAmount + item.sgstAmount + item.total}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      fullWidth
+                      variant="standard"
+                      margin="normal"
+                    />
+                  </TableCell>
+                </>
               ) : (
-                <IgstFields
-                  item={item}
-                  index={index}
-                  handleChange={handleChange}
-                />
+                <>
+                  <TableCell className="invoice-table-row">
+                    <TextField
+                      label="igst(%)"
+                      value={item.igstRate}
+                      onChange={(e) =>
+                        handleChange(index, "igstRate", e.target.value)
+                      }
+                      variant="standard"
+                      margin="normal"
+                      fullWidth
+                    />
+                  </TableCell>
+                  <TableCell className="invoice-table-row">
+                    <TextField
+                      label="Amount"
+                      value={item.igstAmount + item.total}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      fullWidth
+                      variant="standard"
+                      margin="normal"
+                    />
+                  </TableCell>
+                </>
               )}
-              <RemoveButton onClick={() => handleRemoveRow(index)} />
-            </Grid>
-          </Box>
-        ))}
-        <div className="add-row-button">
-          <AddRowButton onClick={handleAddRow} />
-        </div>
-        </TableRow>
-        </TableBody>
-        <h1>Total</h1>
-        <Box
-          sx={{
-            mt: 2,
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            gap: 2,
-          }}
-        >
-          {Object.entries(gstTotalValues).map(([key, value]) => (
-            <Grid item xs={12} sm={6} md={4} key={key}>
-              <GstTotalFields fieldKey={key} value={value} />
-            </Grid>
+              <TableCell
+                className="invoice-table-row"
+                style={{ display: "flex", flexDirection: "row" }}
+              >
+                <AddRowButton onClick={handleAddRow} />
+                {index > 0 && (
+                  <RemoveButton onClick={() => handleRemoveRow(index)} />
+                )}
+              </TableCell>
+            </TableRow>
           ))}
-        </Box>
+        </TableBody>
+        <TableRow>
+          <TableCell style={{ borderRight: "none" }} />
+          <TableCell style={{ borderBottom: "none" }} />
+          <TableCell style={{ borderBottom: "none" }} />
+          <TableCell style={{ borderBottom: "none" }} />
+          <TableCell style={{ borderBottom: "none" }} />
+          <TableCell
+            style={{
+              borderBottom: "none",
+              textAlign: "right",
+              fontSize: "16px",
+            }}
+            colSpan={2}
+          >
+            Invoice Total Inr
+          </TableCell>
+          <TableCell>{gstTotalValues.invoiceTotalInr}</TableCell>
+        </TableRow>
       </Table>
     </TableContainer>
   </div>

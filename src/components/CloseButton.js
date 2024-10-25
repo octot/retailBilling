@@ -9,7 +9,9 @@ const CloseButton = ({ onClick, className }) => {
         xmlns="http://www.w3.org/2000/svg"
         width="50"
         height="50"
-        fill="currentColor"
+        fill="red" // Set the fill color to red
+        stroke="red" // Set the stroke color to red
+        strokeWidth="0" // Increase the stroke width for boldness
         className="bi bi-x"
         viewBox="0 0 16 16"
       >

@@ -44,7 +44,7 @@ export const CommonFields = ({ item, index, handleChange }) => (
         // label="Description"
         value={item.description}
         onChange={(e) => handleChange(index, "description", e.target.value)}
-        fullWidth
+        
         variant="standard"
         margin="normal"
       />
@@ -75,14 +75,14 @@ export const CgstSgstFields = ({ item, index, handleChange }) => (
       value={item.cgstRate}
       onChange={(e) => handleChange(index, "cgstRate", e.target.value)}
       type="number"
-      fullWidth
+      // fullWidth
     />
     <ItemTextField
       label="SGST(%)"
       value={item.sgstRate}
       onChange={(e) => handleChange(index, "sgstRate", e.target.value)}
       type="number"
-      fullWidth
+      // fullWidth
     />
   </>
 );
@@ -115,7 +115,7 @@ export const RemoveButton = ({ onClick }) => (
 
 // Add Row Button component
 export const AddRowButton = ({ onClick }) => (
-  <Grid item xs={12}>
+  <Grid item xs={12} sm={1} display="flex" alignItems="center">
     <PlusButton
       variant="contained"
       color="primary"

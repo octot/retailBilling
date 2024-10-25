@@ -13,6 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import BusinessIcon from '@mui/icons-material/Business';
 import B2B from './components/B2B';
+import Introduction from './introduction'
 import CustomerShipmentItemsBillRUD from './components/customerShipmentItemsBillRUD'
 // import Editcustomershipitembill from '../src/screens/Editcustomershipitembill'
 
@@ -81,9 +82,7 @@ function Billingapp() {
         return <CustomerShipmentItemsBillRUD />;
       default:
         return (
-          <Typography variant="h6" sx={{ mt: 30, textAlign: 'center',fontSize:'30px'}}>
-            Welcome to Customer Management
-          </Typography>
+          <Introduction />
         );
     }
   };
