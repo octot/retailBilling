@@ -1,5 +1,22 @@
 .customerDetailsMain {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
 }
+.error-message {
+  color: red; /* or any color you prefer */
+  font-size: 12px; /* adjust the font size */
+  /* margin-top: 4px; add some space between the input and the error message */
+  position: relative; /* change to relative if absolute causes overlap */
+  /* top: 4px; adjust this value to move the error message down */
+}
+
+.input-container {
+  position: relative; /* make the container relative if using absolute positioning for error */
+  width: 100%; /* ensure the container takes full width */
+  display: flex; /* use flexbox to manage layout */
+  flex-direction: column; /* stack input and error vertically */
+  margin-bottom: 16px; /* add space below the input container */
+}
+
+.existing-customer-details {
+
+}
+

@@ -1,18 +1,21 @@
 // ToolIntro.jsx
-import React, { useState, useEffect } from 'react';
-import { ArrowRight, Check, Clock, Wallet, Users } from 'lucide-react';
-import './ToolIntro.css';
-
+import React, { useState, useEffect } from "react";
+import { ArrowRight, Check, Clock, Wallet, Users } from "lucide-react";
+import "./ToolIntro.css";
+import { useNavigate } from "react-router-dom";
 const ToolIntro = () => {
   const [count, setCount] = useState(0);
-  
+  const navigate = useNavigate();
   useEffect(() => {
     const timer = setInterval(() => {
-      setCount(prev => prev < 60 ? prev + 1 : prev);
+      setCount((prev) => (prev < 60 ? prev + 1 : prev));
     }, 50);
     return () => clearInterval(timer);
   }, []);
 
+  const handleBilling = () => {
+    navigate("/home");
+  };
   return (
     <div className="container">
       {/* Hero Section */}
@@ -55,7 +58,7 @@ const ToolIntro = () => {
           "Save customer profiles for quick access",
           "Generate professional PDF invoices instantly",
           "Share directly to any platform",
-          "Access from any device, anywhere"
+          "Access from any device, anywhere",
         ].map((benefit, index) => (
           <div key={index} className="benefit-item">
             <Check className="check-icon" />
@@ -66,7 +69,7 @@ const ToolIntro = () => {
 
       {/* CTA Button */}
       <div className="cta">
-        <button className="cta-button">
+        <button className="cta-button" onClick={handleBilling}>
           <span>Get Started Free</span>
           <ArrowRight className="arrow-icon" />
         </button>

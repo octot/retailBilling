@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Container, Typography, Button, TextField, Box } from '@mui/material';
 import './TableStyles.css';
 import { URI } from './CONSTANTS'
-function ExistingCustomerDetails() {
+function ExistingCustomerDetails({refreshKey}) {
   const [customers, setCustomers] = useState([]);
   const [editId, setEditId] = useState(null);
   const [editFormData, setEditFormData] = useState({
@@ -19,7 +19,7 @@ function ExistingCustomerDetails() {
       setCustomers(data);
     };
     fetchCustomers();
-  }, []);
+  }, [refreshKey]);
   const handleEditClick = (customer) => {
     setEditId(customer._id);
     setEditFormData({
