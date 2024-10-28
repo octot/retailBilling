@@ -210,11 +210,12 @@ const GstForm = ({
           <TableCell style={{ borderBottom: "none" }} />
           <TableCell style={{ borderBottom: "none" }} />
           <TableCell style={{ borderBottom: "none" }} />
+          <TableCell style={{ borderBottom: "none" }} />
           <TableCell
             style={{
-              borderBottom: "none",
               textAlign: "right",
               fontSize: "16px",
+              fontWeight: "bold",
             }}
             colSpan={2}
           >

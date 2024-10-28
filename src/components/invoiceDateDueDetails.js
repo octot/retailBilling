@@ -13,6 +13,8 @@ const InvoiceDateManager = ({
   formatDate,
   billNo,
   setBillNo,
+  invoiceType,
+  setInvoiceType,
 }) => {
   return (
     <div className="invoice-manager">
@@ -30,6 +32,15 @@ const InvoiceDateManager = ({
 
       <div className="invoice-manager__content">
         <div className="form-grid">
+          <div className="form-group">
+            <label>Invoice Type</label>
+            <input
+              type="text"
+              value={invoiceType}
+              style={{ height: "40px" }}
+              onChange={(e) => setInvoiceType(e.target.value)}
+            />
+          </div>
           <div className="form-group">
             <label>Invoice Date</label>
             <input

@@ -11,15 +11,23 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import { CloseIcon } from "./icons";
 import PdfReportData from "./pdfReportData";
 import GstForm from "./GstForm";
 import InvoiceDateDueDetails from "./invoiceDateDueDetails";
+import AddIcon from "@mui/icons-material/Add";
+import "../componentStyles/itemsTable.css";
+import CloseButton from "./CloseButton";
 const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
   const [items, setItems] = useState([
     {
       itemName: "",
       description: "",
-      hsnCode: "48130",
+      hsnCode: "",
       qty: "",
       rate: "",
       total: 0,
@@ -35,7 +43,7 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
   console.log("items ", items);
   const [gstTotalValues, setGstTotalValues] = useState({});
   const [gstType, setGstType] = useState("cgst_sgst"); // Set default to 'cgst_sgst'
-  let [billNo, setBillNo] = useState("");
+  let [billNo, setBillNo] = useState("INV-2024-001");
   // console.log("gstTotalValuesState ", gstTotalValues)
   const changeBillNo = (event) => {
     setBillNo(event.target.value);
@@ -176,6 +184,7 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
   );
   const [paymentTerms, setPaymentTerms] = useState("net30");
   const [dueDate, setDueDate] = useState("");
+  const [invoiceType, setInvoiceType] = useState("TAX INVOICE");
   const [earlyPaymentDate, setEarlyPaymentDate] = useState("");
   const [discountAmount, setDiscountAmount] = useState(0);
 
@@ -226,6 +235,15 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
       day: "numeric",
     });
   };
+  const [openInvoiceDetailsPopup, setOpenInvoiceDetailsPopup] = useState(false);
+
+  const handleOpenInvoiceDetailsPopup = () => {
+    setOpenInvoiceDetailsPopup(true);
+  };
+
+  const handleCloseInvoiceDetailsPopup = () => {
+    setOpenInvoiceDetailsPopup(false);
+  };
   return (
     <Container>
       <Grid container spacing={2} sx={{ marginTop: "20px" }}>
@@ -264,28 +282,62 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
         gstTotalValues={gstTotalValues}
         invoiceHeaders={invoiceHeaders}
       />
-      <div style={{ marginTop: "2rem" }}>
-        <InvoiceDateDueDetails
-          invoiceDate={invoiceDate}
-          setInvoiceDate={setInvoiceDate}
-          setPaymentTerms={setPaymentTerms}
-          dueDate={dueDate}
-          earlyPaymentDate={earlyPaymentDate}
-          discountAmount={discountAmount}
-          formatDate={formatDate}
-          billNo={billNo}
-          setBillNo={setBillNo}
-        />
+      <div className="invoice-details-main">
+        <Button
+          color="primary"
+          onClick={handleOpenInvoiceDetailsPopup}
+          variant="contained"
+          style={{ textTransform: "none", fontSize: "16px" }}
+          startIcon={<AddIcon />}
+        >
+          Add Invoice Details
+        </Button>
+
+        <Dialog
+          open={openInvoiceDetailsPopup}
+          onClose={handleCloseInvoiceDetailsPopup}
+          maxWidth="md"
+          fullWidth
+        >
+          <DialogTitle>
+            <button
+              className="close-button-invoice"
+              onClick={handleCloseInvoiceDetailsPopup}
+            >
+              <CloseIcon />
+            </button>
+          </DialogTitle>
+          <DialogContent>
+            <InvoiceDateDueDetails
+              invoiceDate={invoiceDate}
+              setInvoiceDate={setInvoiceDate}
+              setPaymentTerms={setPaymentTerms}
+              dueDate={dueDate}
+              earlyPaymentDate={earlyPaymentDate}
+              discountAmount={discountAmount}
+              formatDate={formatDate}
+              billNo={billNo}
+              setBillNo={setBillNo}
+              invoiceType={invoiceType}
+              setInvoiceType={setInvoiceType}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div>
         <PdfReportData
+          invoiceDate={invoiceDate}
           items={items}
+          dueDate={dueDate}
+          discountAmount={discountAmount}
+          formatDate={formatDate}
           customerDetails={customerDetails}
           date={date}
           shipmentDetails={shipmentDetails}
           gstTotalValues={gstTotalValues}
           billNo={billNo}
+          invoiceType={invoiceType}
         />
       </div>
     </Container>

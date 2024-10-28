@@ -1,6 +1,127 @@
-import { Image, Document, Page, Text, View } from "@react-pdf/renderer";
-import styles from "../componentStyles/pdfReportStyle";
+import {
+  Font,
+  Image,
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+} from "@react-pdf/renderer";
+// import styles from "../componentStyles/pdfReportStyle";
+const styles = StyleSheet.create({
+  page: {
+    padding: 30,
+    fontSize: 12,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    marginBottom: 20,
+    justifyContent: "space-between",
+  },
+  logoSection: {
+    width: "30%",
+  },
+  logo: {
+    width: 120,
+    height: 60,
+    marginBottom: 10,
+  },
+  invoiceHeader: {
+    width: "40%",
+    textAlign: "center",
+  },
+  senderDetails: {
+    width: "30%",
+    textAlign: "right",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  section: {
+    marginBottom: 20,
+    padding: 10,
+    border: "1 solid #e0e0e0",
+    borderRadius: 5,
+  },
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 10,
+    paddingBottom: 5,
+    borderBottom: "1 solid #3498db",
+  },
+  detailsGrid: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  detailsGridBulletPoints: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  column: {
+    width: "48%",
+  },
+  detailItem: {
+    marginBottom: 8,
+  },
+  label: {
+    fontWeight: "bold",
+    color: "#7f8c8d",
+  },
+  table: {
+    width: "100%",
+    marginTop: 10,
+  },
+  tableRow: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+    borderBottomStyle: "solid",
+    paddingVertical: 8,
+  },
+  tableHeader: {
+    backgroundColor: "#f8f9fa",
+    fontWeight: "bold",
+  },
+  tableCell: {
+    flex: 1,
+    padding: 5,
+  },
+  totals: {
+    marginTop: 20,
+    alignItems: "flex-end",
+  },
+  totalItem: {
+    marginVertical: 5,
+    fontWeight: "bold",
+  },
+  grandTotal: {
+    fontSize: 14,
+    fontWeight: "bold",
+    borderTopWidth: 2,
+    borderTopColor: "#3498db",
+    borderTopStyle: "solid",
+    paddingTop: 5,
+  },
+});
+
+Font.register({
+  family: "Roboto",
+  src: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap",
+});
 const PdfReport = ({
+  paymentDetails,
+  myCompany,
+  invoiceType,
+  invoiceDate,
+  dueDate,
+  discountAmount,
+  formatDate,
+  items,
+  itemsInPieces,
+  shipmentDetails,
   itemsInPiecesList,
   image,
   sampleLogo,
@@ -14,254 +135,199 @@ const PdfReport = ({
   gstTotalList,
   paymentDetailsInfo,
   orderedBulletPoints,
+  customerDetails,
 }) => {
-  // console.log("imageFROmPDF ", image)
-  // console.log("itemsInPiecesListFromPDF ", itemsInPiecesList)
+  console.log(typeof paymentDetailsInfo);
 
-  // // console.log("orderedBulletPoints001 ", orderedBulletPoints)
-  // // console.log(" paymentDetailsInfo_value  ", paymentDetailsInfo)
   return (
     <Document>
-      {itemsInPiecesList.map((itemsInPieces, index) => (
-        <Page size="A4" style={styles.page}>
-          <View style={styles.pageStyle}>
-            <View style={styles.logoheaderContainer}>
-              {image ? (
-                <Image src={image} style={styles.logoheader} />
-              ) : (
-                <Image src={sampleLogo} style={styles.sampleLogoheader} />
-              )}
-            </View>
-            <View>
-              <View style={styles.billNoContainer}>
-                <Text>BillNo: {billNo}</Text>
+      <Page size="A4" style={styles.page}>
+        {/* Header Section */}
+        <View style={styles.headerContainer}>
+          <View style={styles.logoSection}>
+            {image && (
+              <Image
+                style={styles.logo}
+                src={image} // Use the image URL here
+              />
+            )}
+            <Text>{myCompany.companyName || "Company Name"}</Text>
+            <Text>{myCompany.gstNumber || "GST: 27XXXXXXXXXXXXXX"}</Text>
+          </View>
+          <View style={styles.invoiceHeader}>
+            <Text style={styles.title}>{invoiceType}</Text>
+            <Text>Invoice No:{billNo}</Text>
+            <Text>Date: {invoiceDate || ""}</Text>
+            <Text>DueDate: {dueDate || ""}</Text>
+          </View>
+          <View style={styles.senderDetails}>
+            <Text>{myCompany.companyName || "Company Name"}</Text>
+            <Text>
+              {myCompany.address || "123 Business Street City, State - PIN"}
+            </Text>
+
+            <Text>Phone: {myCompany.phone || "+91 1234567890"}</Text>
+            <Text>Email: {myCompany.email || "contact@company.com"}</Text>
+          </View>
+        </View>
+        {/* Customer Details Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Customer Details</Text>
+          <View style={styles.detailsGrid}>
+            <View style={styles.column}>
+              <View style={styles.detailItem}>
+                <Text style={styles.label}>Name:</Text>
+                <Text>{customerDetails?.customerName || ""}</Text>
+              </View>
+              <View style={styles.detailItem}>
+                <Text style={styles.label}>Address:</Text>
+                <Text>{customerDetails?.address || ""}</Text>
               </View>
             </View>
-            <View style={styles.customerAndShipmentDetails}>
-              <View style={styles.customerInfoContainer}>
-                <Text style={styles.customerDetailsTitle}>CustomerDetails</Text>
-                {customerInfo.map((info, index) => (
-                  <View style={styles.detailSection} key={index}>
-                    {info.label == "Address" ? (
-                      <View style={styles.customerAndShipmentDetailsAddress}>
-                        <Text
-                          style={styles.customerAndShipmentDetailsAttributeKey}
-                        >
-                          {info.label}:
-                        </Text>
-                        <Text
-                          style={
-                            styles.customerAndShipmentDetailsAttributeValue
-                          }
-                        >
-                          {" "}
-                          {info.value}{" "}
-                        </Text>
-                      </View>
-                    ) : (
-                      <>
-                        <Text
-                          style={styles.customerAndShipmentDetailsAttributeKey}
-                        >
-                          {info.label}:
-                        </Text>
-                        <Text
-                          style={
-                            styles.customerAndShipmentDetailsAttributeValue
-                          }
-                        >
-                          {" "}
-                          {info.value}{" "}
-                        </Text>
-                      </>
-                    )}
-                  </View>
-                ))}
+            <View style={styles.column}>
+              <View style={styles.detailItem}>
+                <Text style={styles.label}>GST No:</Text>
+                <Text>{customerDetails?.customerGst || ""}</Text>
               </View>
-              <View style={styles.separator} />
-              <View style={styles.shipmentInfoContainer}>
-                <Text style={styles.customerDetailsTitle}>ShipmentDetails</Text>
-                {shipmentInfo.map((info, index) => (
-                  <View style={styles.detailSection} key={index}>
-                    {info.label == "Address" ? (
-                      <View style={styles.customerAndShipmentDetailsAddress}>
-                        <Text
-                          style={styles.customerAndShipmentDetailsAttributeKey}
-                        >
-                          {info.label}:
-                        </Text>
-                        <Text
-                          style={
-                            styles.customerAndShipmentDetailsAttributeValue
-                          }
-                        >
-                          {" "}
-                          {info.value}{" "}
-                        </Text>
-                      </View>
-                    ) : (
-                      <>
-                        <Text
-                          style={styles.customerAndShipmentDetailsAttributeKey}
-                        >
-                          {info.label}:
-                        </Text>
-                        <Text
-                          style={
-                            styles.customerAndShipmentDetailsAttributeValue
-                          }
-                        >
-                          {" "}
-                          {info.value}{" "}
-                        </Text>
-                      </>
-                    )}
-                  </View>
-                ))}
+              <View style={styles.detailItem}>
+                <Text style={styles.label}>Phone:</Text>
+                <Text>{customerDetails?.phoneNumber || ""}</Text>
               </View>
-            </View>
-            <View style={styles.table}>
-              <View style={styles.tableRow}>
-                <Text
-                  style={[
-                    styles.headerCell,
-                    styles.slnoCell,
-                    styles.boldRobotFont,
-                  ]}
-                >
-                  Item Name
-                </Text>
-                <Text
-                  style={[
-                    styles.headerCell,
-                    styles.descriptionCell,
-                    styles.boldRobotFont,
-                  ]}
-                >
-                  Description
-                </Text>
-                <Text
-                  style={[
-                    styles.headerCell,
-                    styles.hsnCodeCell,
-                    styles.boldRobotFont,
-                  ]}
-                >
-                  HSN Code
-                </Text>
-                <Text
-                  style={[
-                    styles.headerCell,
-                    styles.qtyCell,
-                    styles.boldRobotFont,
-                  ]}
-                >
-                  Quantity
-                </Text>
-                <Text
-                  style={[
-                    styles.headerCell,
-                    styles.rateCell,
-                    styles.boldRobotFont,
-                  ]}
-                >
-                  Rate
-                </Text>
-                <Text
-                  style={[
-                    styles.headerCell,
-                    styles.totalCell,
-                    styles.boldRobotFont,
-                  ]}
-                >
-                  Total
-                </Text>
-                {gstList.map((tax) => (
-                  <View key={tax} style={styles.gstCellContainer}>
-                    <Text style={[styles.gstHeading, styles.boldRobotFont]}>
-                      {tax}
-                    </Text>
-                    <View style={styles.gstCell}>
-                      <Text style={[styles.gstSubHeader, styles.boldRobotFont]}>
-                        Rate
-                      </Text>
-                      <Text
-                        style={[styles.gstSubHeaderLast, styles.boldRobotFont]}
-                      >
-                        Amount
-                      </Text>
-                    </View>
-                  </View>
-                ))}
-              </View>
-              {itemsInPieces.map((item, index) => (
-                <View key={index} style={styles.tableRow}>
-                  <Text style={[styles.tableCell, styles.slnoCell]}>
-                    {item.itemName}
-                  </Text>
-                  <Text style={[styles.tableCell, styles.descriptionCell]}>
-                    {item.description}
-                  </Text>
-                  <Text style={[styles.tableCell, styles.hsnCodeCell]}>
-                    {item.hsnCode}
-                  </Text>
-                  <Text style={[styles.tableCell, styles.qtyCell]}>
-                    {item.qty}
-                  </Text>
-                  <Text style={[styles.tableCell, styles.rateCell]}>
-                    {item.rate}
-                  </Text>
-                  <Text style={[styles.tableCell, styles.totalCell]}>
-                    {item.total}
-                  </Text>
-                  {gstCellContainerValueMap.map((attribute) => (
-                    <View style={styles.gstCellContainerValue}>
-                      <View style={styles.gstCell}>
-                        <Text style={styles.gstSubHeaderValue}>
-                          {item[attribute.key]}
-                        </Text>
-                        <Text style={styles.gstSubHeaderLastValue}>
-                          {item[attribute.value]}
-                        </Text>
-                      </View>
-                    </View>
-                  ))}
-                </View>
-              ))}
-              <View style={styles.tableRow}>
-                <Text style={[styles.tableCell, styles.descriptionTotalCell]}>
-                  Total
-                </Text>
-                <Text style={[styles.tableCell, styles.totalCell]}>
-                  {gstTotalValues.rateTotal}
-                </Text>
-                {gstTotalList.map((gstTotalAttribute) => (
-                  <View style={styles.gstCellContainerValue}>
-                    <View style={styles.gstCell}>
-                      <Text style={[styles.gstSubHeaderValue]}></Text>
-                      <Text style={styles.gstSubHeaderLastValue}>
-                        {gstTotalValues[gstTotalAttribute]}
-                      </Text>
-                    </View>
-                  </View>
-                ))}
-              </View>
-              {gstTotalFInalListMap.map((column) => (
-                <View style={styles.tableRow}>
-                  <Text style={[styles.tableCell, styles.gstTotalCell]}></Text>
-                  <Text style={[styles.tableCell, styles.gstTotalLabelCell]}>
-                    {column.columnName}
-                  </Text>
-                  <Text style={[styles.tableCell, styles.gstTotalValueCell]}>
-                    {gstTotalValues[column.columnValue]}
-                  </Text>
-                </View>
-              ))}
             </View>
           </View>
-        </Page>
-      ))}
-      {paymentDetailsInfo[0].value && (
+        </View>
+
+        {/* Shipment Details Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Shipment Details</Text>
+          <View style={styles.detailsGrid}>
+            <View style={styles.column}>
+              <View style={styles.detailItem}>
+                <Text style={styles.label}>Shipping To:</Text>
+                <Text>{shipmentDetails?.customerName || ""}</Text>
+              </View>
+              <View style={styles.detailItem}>
+                <Text style={styles.label}>Address:</Text>
+                <Text>
+                  <Text>{shipmentDetails?.address || ""}</Text>
+                </Text>
+              </View>
+            </View>
+            <View style={styles.column}>
+              <View style={styles.detailItem}>
+                <Text style={styles.label}>GST No:</Text>
+                <Text>{shipmentDetails?.customerGst || ""}</Text>
+              </View>
+              <View style={styles.detailItem}>
+                <Text style={styles.label}>Phone:</Text>
+                <Text>{shipmentDetails?.phoneNumber || ""}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Item Details Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Item Details</Text>
+          <View style={styles.table}>
+            <View style={[styles.tableRow, styles.tableHeader]}>
+              <Text style={styles.tableCell}>Item Name</Text>
+              <Text style={styles.tableCell}>Description</Text>
+              <Text style={styles.tableCell}>HSN Code</Text>
+              <Text style={styles.tableCell}>qty</Text>
+              <Text style={styles.tableCell}>Rate</Text>
+              <Text style={styles.tableCell}>Total</Text>
+            </View>
+            {items.map((item, index) => (
+              <View style={styles.tableRow}>
+                <Text style={styles.tableCell}>{item.itemName}</Text>
+                <Text style={styles.tableCell}>{item.description}</Text>
+                <Text style={styles.tableCell}>{item.hsnCode}</Text>
+                <Text style={styles.tableCell}>{item.qty}</Text>
+                <Text style={styles.tableCell}>{item.rate}</Text>
+                <Text style={styles.tableCell}>{item.total}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+
+        {/* Tax Details Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Tax Details</Text>
+          <View style={styles.table}>
+            <View style={[styles.tableRow, styles.tableHeader]}>
+              <Text style={styles.tableCell}>Tax Type</Text>
+              <Text style={styles.tableCell}>Amount</Text>
+            </View>
+            <View style={styles.tableRow}>
+              <Text style={styles.tableCell}>CGST</Text>
+              <Text style={styles.tableCell}>{gstTotalValues.cgstTotal}</Text>
+            </View>
+            <View style={styles.tableRow}>
+              <Text style={styles.tableCell}>SGST</Text>
+              <Text style={styles.tableCell}>{gstTotalValues.sgstTotal}</Text>
+            </View>
+            <View style={styles.tableRow}>
+              <Text style={styles.tableCell}>IGST</Text>
+              <Text style={styles.tableCell}>{gstTotalValues.igstTotal}</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Totals Section */}
+        <View style={styles.totals}>
+          <Text style={styles.totalItem}>
+            GST Total: {gstTotalValues.gstTotalSum}
+          </Text>
+          <Text style={styles.totalItem}>
+            Rate Total: {gstTotalValues.rateTotal}
+          </Text>
+          <Text style={[styles.totalItem, styles.grandTotal]}>
+            Invoice Total: {gstTotalValues.invoiceTotalInr}
+          </Text>
+        </View>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Payment Details</Text>
+          <View style={styles.detailsGrid}>
+            <View style={styles.column}>
+              <View style={styles.detailItem}>
+                <Text style={styles.label}>Account Name:</Text>
+                <Text>{paymentDetails?.accountName || ""}</Text>
+              </View>
+              <View style={styles.detailItem}>
+                <Text style={styles.label}>Account Number:</Text>
+                <Text>{paymentDetails?.accountNumber || ""}</Text>
+              </View>
+            </View>
+            <View style={styles.column}>
+              <View style={styles.detailItem}>
+                <Text style={styles.label}>Bank Name:</Text>
+                <Text>{paymentDetails?.bankName || ""}</Text>
+              </View>
+              <View style={styles.detailItem}>
+                <Text style={styles.label}>GPay Number:</Text>
+                <Text>{paymentDetails?.gpayNumber || ""}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Terms And Conditions</Text>
+          <View style={styles.detailsGridBulletPoints}>
+            {orderedBulletPoints.map((info, index) => (
+              <View style={styles.detailTermsOfSaleContainer} key={index}>
+                <Text style={styles.detailTermsOfSaleContainerAttributeKey}>
+                  {info}
+                </Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      </Page>
+
+      {/*   
+            {paymentDetailsInfo[0].value && (
         <Page size="A4" style={styles.page}>
           <View style={styles.termsOfSalePaymentDetailsContainer}>
             <View style={styles.paymentDetailsContainer}>
@@ -303,6 +369,7 @@ const PdfReport = ({
           </View>
         </Page>
       )}
+        */}
     </Document>
   );
 };

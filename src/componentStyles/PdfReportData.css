@@ -1,4 +1,4 @@
-.payment-details-box{
+.payment-details-box {
   height: 50vh;
   border: 1px solid black;
   padding: 1.5rem;
@@ -7,17 +7,12 @@
   background-color: "#f9f9f9";
   width: 70vw;
 }
-.bullet-points-box{
+.bullet-points-box {
   border: 1px solid black;
 }
 
 .close-button {
-  position: absolute;
-  top: 0rem;
-  background: none;
-  border: none;
-  font-size: 2.5rem;
-  cursor: pointer;
+  margin-left: 93% !important;
 }
 
 .close-button-terms {
@@ -35,6 +30,119 @@
   font-size: 2.5rem;
   cursor: pointer;
   top: 0;
-  right: 150px;
+  right: 30px;
   padding: 10px;
+}
+.dialog-container {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 800px;
+  height: 80vh;
+  max-height: 600px;
+  z-index: 1000;
+}
+
+.bullet-points-box {
+  height: 100%;
+  overflow: auto;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dialog-title {
+  margin: 0 0 20px 0;
+  padding-right: 30px;
+}
+
+/* Add overlay background */
+.dialog-container::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+.bullet-points-main {
+  margin-top: -40px;
+
+  margin-left: 250px;
+}
+.payment-details-main {
+  margin-top: -40px;
+
+  margin-left: 510px;
+}
+
+.share-modal {
+ 
+
+}
+
+.share-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+}
+
+.share-modal-header h2 {
+  font-size: 18px;
+}
+
+.close-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.share-modal-content {
+  
+}
+
+.popup-content {
+  display: flex;
+  justify-content: center;
+ 
+}
+
+.share-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin: 0 22px;
+  font-size: 32px;
+}
+
+.share-button:hover {
+  opacity: 0.8;
+}
+
+.share-button.whatsapp {
+  color: #25d366;
+}
+
+.share-button.gmail {
+  color: #ea4335;
+}
+
+.share-button.telegram {
+  color: #0088cc;
 }

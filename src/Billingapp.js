@@ -22,6 +22,9 @@ import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import BusinessIcon from "@mui/icons-material/Business";
 import B2B from "./components/B2B";
+import CompanyDetails from "./components/MyCompanyDetails";
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import Home from "./components/Home";
 import CustomerShipmentItemsBillRUD from "./components/customerShipmentItemsBillRUD";
 // import Editcustomershipitembill from '../src/screens/Editcustomershipitembill'
 
@@ -64,13 +67,13 @@ function Billingapp() {
       <List>
         {[
           { text: "Home", icon: <HomeIcon />, view: "menu" },
-          { text: "Create New Customer", icon: <AddIcon />, view: "create" },
-          { text: "B2B", icon: <BusinessIcon />, view: "b2b" },
           {
-            text: "Edit/delete Existing details",
+            text: "My Company Details",
             icon: <BusinessIcon />,
-            view: "EDED",
+            view: "companyDetails",
           },
+          { text: "Create Client Details", icon: <AddIcon />, view: "create" },
+          { text: "Invoice", icon: <ReceiptIcon />, view: "b2b" },
         ].map((item) => (
           <ListItem
             button
@@ -91,10 +94,10 @@ function Billingapp() {
         return <Customerdetails />;
       case "b2b":
         return <B2B />;
-      case "EDED":
-        return <CustomerShipmentItemsBillRUD />;
+      case "companyDetails":
+        return <CompanyDetails />;
       default:
-        return <h1>Welcome</h1>;
+        return <Home />;
     }
   };
 
@@ -116,7 +119,7 @@ function Billingapp() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Customer Management
+            Invoice Generator
           </Typography>
         </Toolbar>
       </AppBar>

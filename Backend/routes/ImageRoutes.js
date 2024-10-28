@@ -12,7 +12,7 @@ const saveBase64Image = (base64Image, folder = "uploads") => {
 };
 const handleBase64Upload = async (req, res) => {
   try {
-    console.log('req.bodyFromImage',req.body)
+    // console.log('req.bodyFromImage',req.body)
     const base64Image = req.body.image;
     const imagePath = saveBase64Image(base64Image);
     const image = new ImageModel({ url: `/uploads/${imagePath}` });
@@ -29,4 +29,19 @@ const handleBase64Upload = async (req, res) => {
   }
 };
 
-module.exports = { saveBase64Image, handleBase64Upload };
+const getAllImages = async (req, res) => {
+  try {
+    const latestImage = await ImageModel.findOne().sort({ createdAt: -1 }); // Sort by creation date descending
+    if (latestImage) {
+      res.status(200).json(latestImage);
+    } else {
+      res.status(404).json({ message: "No images found" });
+    }
+  } catch (error) {
+    console.error("Error fetching the latest image:", error);
+    res.status(500).json({ error: "Failed to fetch the latest image" });
+  }
+};
+
+
+module.exports = { saveBase64Image, handleBase64Upload ,getAllImages};

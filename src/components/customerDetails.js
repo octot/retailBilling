@@ -2,7 +2,6 @@ import React, { useState, useCallback } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ExistingCustomerDetails from "./ExistingCustomerDetails";
-
 import {
   TextField,
   Button,
@@ -15,6 +14,9 @@ import {
 } from "@mui/material";
 import "../componentStyles/customerDetails.css";
 import { URI } from "./CONSTANTS";
+import Popup from "./Popup";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 // Constants
 const GST_REGEX =
@@ -22,6 +24,7 @@ const GST_REGEX =
 const PHONE_REGEX = /^[6-9]\d{9}$/;
 
 const CustomerForm = () => {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [customerType, setCustomerType] = useState("B2B");
   const [formData, setFormData] = useState({
     name: "",
@@ -39,7 +42,9 @@ const CustomerForm = () => {
       [name]: value,
     }));
   }, []);
-
+  const togglePopup = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
   const validateCustomerAttributes = useCallback(
     (data) => {
       const errors = {};
@@ -72,7 +77,7 @@ const CustomerForm = () => {
         });
 
         if (response.ok) {
-          setRefreshKey(prev => prev + 1);
+          setRefreshKey((prev) => prev + 1);
           toast.success("Customer data saved");
           setFormData({
             name: "",
@@ -98,176 +103,121 @@ const CustomerForm = () => {
 
   return (
     <div>
-      <div className="customerDetailsMain">
-        <ToggleButtonGroup
-          value={customerType}
-          exclusive
-          onChange={handleCustomerTypeChange}
-          aria-label="customer type"
-          sx={{ mb: 2 }}
-        >
-          <ToggleButton value="B2B" aria-label="B2B">
-            B2B
-          </ToggleButton>
-          <ToggleButton value="B2C" aria-label="B2C">
-            B2C
-          </ToggleButton>
-        </ToggleButtonGroup>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Customer Creation
-        </Typography>
-        <Container>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            sx={{
-              gap: "20px",
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} md={4}>
-                <TextField
-                  fullWidth
-                  label="Name"
+      <div className="client-form-container">
+        <div className="client-form-inner">
+          <div className="client-header-box">
+            <h1 className="client-title">Enter Client Details</h1>
+          </div>
+          <div>
+            <ToggleButtonGroup
+              value={customerType}
+              exclusive
+              onChange={handleCustomerTypeChange}
+              aria-label="customer type"
+            >
+              <ToggleButton value="B2B" aria-label="B2B">
+                B2B
+              </ToggleButton>
+              <ToggleButton value="B2C" aria-label="B2C">
+                B2C
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="client-form-layout">
+              <div className="client-input-group">
+                <label htmlFor="name">
+                  Name<span style={{ color: "red" }}>*</span>
+                </label>
+                <input
+                  type="text"
+                  id="name"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  margin="normal"
-                  InputProps={{
-                    sx: {
-                      padding: "0 8px", // Controls padding for reduced height
-                    },
-                  }}
-                  inputProps={{
-                    style: {
-                      fontSize: "12px", // Font size for input text
-                    },
-                  }}
-                  InputLabelProps={{
-                    sx: {
-                      fontSize: "12px", // Reduced font size for label
-                      marginTop: "-4px", // Adjusts label position for alignment
-                    },
-                  }}
                 />
                 {errors.name && (
-                  <span className="error-message">{errors.name}</span>
+                  <span className="client-error-message">{errors.name}</span>
                 )}
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <TextField
-                  fullWidth
-                  label="Address"
+              </div>
+              <div className="client-input-group">
+                <label htmlFor="address">
+                  Address<span style={{ color: "red" }}>*</span>
+                </label>
+                <input
+                  type="text"
+                  id="address"
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
                   required
-                  margin="normal"
-                  InputProps={{
-                    sx: {
-                      padding: "0 8px",
-                    },
-                  }}
-                  inputProps={{
-                    style: {
-                      fontSize: "12px",
-                    },
-                  }}
-                  InputLabelProps={{
-                    sx: {
-                      fontSize: "12px",
-                      marginTop: "-4px",
-                    },
-                  }}
                 />
                 {errors.address && (
-                  <span className="error-message">{errors.address}</span>
+                  <span className="client-error-message">{errors.address}</span>
                 )}
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <TextField
-                  fullWidth
-                  label="Customer GST"
+              </div>
+
+              <div className="client-input-group">
+                <label htmlFor="customerGst">
+                  {customerType === "B2B" ? (
+                    <span>
+                      Customer GST<span style={{ color: "red" }}>*</span>
+                    </span>
+                  ) : (
+                    <span>Customer GST</span>
+                  )}
+                </label>
+                <input
+                  type="text"
+                  id="customerGst"
                   name="customerGst"
                   value={formData.customerGst}
                   onChange={handleChange}
                   required={customerType === "B2B"}
-                  margin="normal"
-                  InputProps={{
-                    sx: {
-                      padding: "0 8px",
-                    },
-                  }}
-                  inputProps={{
-                    style: {
-                      fontSize: "12px",
-                    },
-                  }}
-                  InputLabelProps={{
-                    sx: {
-                      fontSize: "12px",
-                      marginTop: "-4px",
-                    },
-                  }}
                 />
                 {errors.customerGst && (
-                  <span className="error-message">{errors.customerGst}</span>
+                  <span className="client-error-message">
+                    {errors.customerGst}
+                  </span>
                 )}
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <TextField
-                  fullWidth
-                  label="Phone Number"
+              </div>
+
+              <div className="client-input-group">
+                <label htmlFor="phoneNumber">
+                  Phone Number<span style={{ color: "red" }}>*</span>
+                </label>
+                <input
+                  type="tel"
+                  id="phoneNumber"
                   name="phoneNumber"
                   value={formData.phoneNumber}
                   onChange={handleChange}
                   required
-                  margin="normal"
-                  InputProps={{
-                    sx: {
-                      padding: "0 8px",
-                    },
-                  }}
-                  inputProps={{
-                    style: {
-                      fontSize: "12px",
-                    },
-                  }}
-                  InputLabelProps={{
-                    sx: {
-                      fontSize: "12px",
-                      marginTop: "-4px",
-                    },
-                  }}
                 />
                 {errors.phoneNumber && (
-                  <span className="error-message">{errors.phoneNumber}</span>
+                  <span className="client-error-message">
+                    {errors.phoneNumber}
+                  </span>
                 )}
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  sx={{
-                    mt: 2,
-                    height: "50px",
-                    width: "30%",
-                  }}
-                >
-                  Submit
-                </Button>
-              </Grid>
-            </Grid>
+              </div>
+            </div>
+            <Button type="submit" className="client-submit-button">
+              Submit
+            </Button>
             <ToastContainer />
-          </Box>
-        </Container>
+          </form>
+        </div>
       </div>
       <div className="existing-customer-details">
-        <ExistingCustomerDetails refreshKey={refreshKey}/>
+        <Button className="styled-button" onClick={togglePopup}>
+          <FontAwesomeIcon icon={faEye} /> View my clients
+        </Button>
+        <Popup isOpen={isPopupOpen} onClose={togglePopup}>
+          <div>
+            <ExistingCustomerDetails refreshKey={refreshKey} />
+          </div>
+        </Popup>
       </div>
     </div>
   );

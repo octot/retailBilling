@@ -1,0 +1,67 @@
+.tool-container {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  height: 50vh;
+  width: 100vw;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.tool-header {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.step-container {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px 0;
+  border-top: 1px solid #ddd;
+}
+
+.step-container:first-child {
+  border-top: none;
+}
+
+.step-icon {
+  color: green;
+  margin-right: 10px;
+  font-size: 24px; /* Ensures consistent size */
+  flex-shrink: 0; /* Prevents resizing based on text */
+}
+
+.step-content {
+  width: 100%;
+}
+
+.step-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.step-description {
+  color: #666;
+  margin: 4px 0 0;
+  font-size: 14px;
+  width: 100%;
+}
+
+.restart-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #6c757d;
+  color: white;
+  padding: 8px 12px;
+  margin-top: 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.restart-button:hover {
+  background-color: #5a6268;
+}

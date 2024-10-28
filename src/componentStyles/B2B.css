@@ -1,4 +1,24 @@
-.B2BMain 
-{
-    width: 100;
+.B2BMain {
+  width: 100;
+}
+.shipment-container,
+.customer-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  /* Example: Cool Ocean Breeze */
+  box-shadow: 0 4px 8px rgba(200, 200, 200, 0.3); /* Light gray shadow */
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f7f7f7
+  ); /* Pure white to light gray gradient */
+
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.transparent-border {
+  border: 1px solid transparent;
+  margin-left: 20px; /* Adjust this value to move it slightly to the right */
 }

@@ -10,9 +10,6 @@ import { PDFViewer } from "@react-pdf/renderer";
 import termsOfSale from "../images/termsOfSale.jpg";
 import { pdf } from "@react-pdf/renderer";
 import { Button, TextField } from "@mui/material";
-import { useCallback, useRef } from "react";
-import { useDropzone } from "react-dropzone";
-import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import PDfReport from "../components/pdfReport";
 import {
@@ -26,16 +23,24 @@ import {
   getGstCellContainerValueMap,
   getPaymentDetails,
 } from "../Utils/pdfUtil";
-import { Box, Typography, Grid, Dialog, DialogContent } from "@mui/material";
+import { Box, Typography, Grid, Dialog } from "@mui/material";
 import sampleLogo from "../images/sampleLogo.jpeg";
 import BulletPoints from "../components/bulletPoints";
 import PaymentDetails from "../components/PaymentDetails";
 import "../componentStyles/PdfReportData.css";
 import axios from "axios";
-import { URI } from "./CONSTANTS";
+import { URI, noApi } from "./CONSTANTS";
 import { StyledButton } from "./StyleButton";
 import CloseButton from "./CloseButton";
+import AddIcon from "@mui/icons-material/Add";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Using react-icons for the eye icon
+
 const PdfReportData = ({
+  invoiceType,
+  invoiceDate,
+  dueDate,
+  discountAmount,
+  formatDate,
   items,
   customerDetails,
   date,
@@ -43,6 +48,11 @@ const PdfReportData = ({
   gstTotalValues,
   billNo,
 }) => {
+  const [isPdfVisible, setIsPdfVisible] = useState(false);
+  const togglePdfVisibility = () => {
+    setIsPdfVisible(!isPdfVisible);
+  };
+  const [image, setImage] = useState(null);
   const itemsInPiecesList = itemsToParts(items, 10);
   const customerInfo = getCustomerInfo(customerDetails, date);
   const shipmentInfo = getShipmentInfo(shipmentDetails, date);
@@ -51,27 +61,39 @@ const PdfReportData = ({
   const gstTotalFInalListMap = getGstTotalFinalListMap();
   const gstCellContainerValueMap = getGstCellContainerValueMap();
   const [paymentDetails, setPaymentDetails] = useState({
-    accountName: "",
-    accountNumber: "",
-    bankName: "",
-    gpayNumber: "",
+    accountName: "Your Account Name",
+    accountNumber: "123456789012",
+    bankName: "Your Bank Name",
+    gpayNumber: "9876543210",
   });
-  const [image, setImage] = useState(null);
-  const [crop, setCrop] = useState({ aspect: 16 / 9 });
-  const [scale, setScale] = useState(1);
-  const [completedCrop, setCompletedCrop] = useState(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogImagePreviewerOpen, setDialogImagePreviewerOpen] =
-    useState(false);
-  const imgRef = useRef(null);
-  const previewCanvasRef = useRef(null);
+
   const [inputText, setInputText] = useState("");
-  const [bulletPoints, setBulletPoints] = useState([]);
+  const [bulletPoints, setBulletPoints] = useState([
+    "All taxes are calculated based on the current tax laws and regulations.",
+    "The customer is responsible for any additional taxes or fees that may apply.",
+  ]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [editText, setEditText] = useState("");
   const [isbulletPointsVisible, setBulletPointsVisible] = useState(false);
   const [paymentDetailsOpen, setPaymentDetailsOpen] = useState(false);
-  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+  const [myCompany, setMyCompany] = useState([]);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchCompanyInfo = async () => {
+      try {
+        const response = await fetch(`${URI}/getCompany`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok " + response.statusText);
+        }
+        const data = await response.json();
+        setMyCompany(data);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+    fetchCompanyInfo();
+  }, []);
+  console.log("myCompany", myCompany);
   const handleBulletPointsOpen = () => {
     setBulletPointsVisible(true);
   };
@@ -181,6 +203,8 @@ const PdfReportData = ({
       }
       const pdfBlob = await pdf(
         <PDfReport
+          myCompany={myCompany}
+          shipmentDetails={shipmentDetails}
           itemsInPiecesList={itemsInPiecesList}
           image={image}
           sampleLogo={sampleLogo}
@@ -194,7 +218,15 @@ const PdfReportData = ({
           gstTotalList={gstTotalList}
           termsOfSale={termsOfSale}
           paymentDetailsInfo={paymentDetailsInfo}
-          bulletPoints={bulletPoints}
+          orderedBulletPoints={orderedBulletPoints}
+          customerDetails={customerDetails}
+          items={items}
+          invoiceDate={invoiceDate}
+          dueDate={dueDate}
+          discountAmount={discountAmount}
+          formatDate={formatDate}
+          invoiceType={invoiceType}
+          paymentDetails={paymentDetails}
         />
       ).toBlob();
       // Create formData with the blob to upload
@@ -228,97 +260,6 @@ const PdfReportData = ({
     return (
       <StyledButton onClick={downloadPdfDocument}>Download PDF</StyledButton>
     );
-  };
-  const onDrop = useCallback((acceptedFiles) => {
-    const file = acceptedFiles[0];
-    if (!file.type.startsWith("image/")) {
-      window.alert("Upload only image files!");
-      setImage(null);
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImage(reader.result);
-    };
-    reader.readAsDataURL(file);
-  }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: "image/*",
-  });
-  const generatePreview = useCallback(() => {
-    if (!completedCrop || !imgRef.current || !previewCanvasRef.current) {
-      return;
-    }
-    const image = imgRef.current;
-    const canvas = previewCanvasRef.current;
-    const crop = completedCrop;
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
-    const ctx = canvas.getContext("2d");
-    canvas.width = crop.width * scale;
-    canvas.height = crop.height * scale;
-    ctx.setTransform(scale, 0, 0, scale, 0, 0);
-    ctx.imageSmoothingQuality = "high";
-    ctx.drawImage(
-      image,
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
-      0,
-      0,
-      crop.width,
-      crop.height
-    );
-  }, [completedCrop, scale]);
-  useEffect(() => {
-    generatePreview();
-  }, [completedCrop, scale, generatePreview]);
-  const handleDialogOpen = () => {
-    setDialogOpen(true);
-  };
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-  };
-  const handleDialogImagePreviewerOpen = () => {
-    setDialogImagePreviewerOpen(true);
-  };
-  const handleDialogImagePreviewerClose = () => {
-    setDialogImagePreviewerOpen(false);
-  };
-  const handleClearImage = () => {
-    setImage(null);
-    setCompletedCrop(null);
-    setCrop({ aspect: 16 / 9 });
-    setScale(1);
-  };
-  const handleSaveCrop = () => {
-    if (!completedCrop || !imgRef.current) {
-      return;
-    }
-    const canvas = document.createElement("canvas");
-    const scaleX = imgRef.current.naturalWidth / imgRef.current.width;
-    const scaleY = imgRef.current.naturalHeight / imgRef.current.height;
-    canvas.width = completedCrop.width * scale;
-    canvas.height = completedCrop.height * scale;
-    const ctx = canvas.getContext("2d");
-    ctx.setTransform(scale, 0, 0, scale, 0, 0);
-    ctx.imageSmoothingQuality = "high";
-    ctx.drawImage(
-      imgRef.current,
-      completedCrop.x * scaleX,
-      completedCrop.y * scaleY,
-      completedCrop.width * scaleX,
-      completedCrop.height * scaleY,
-      0,
-      0,
-      completedCrop.width,
-      completedCrop.height
-    );
-    const croppedImageUrl = canvas.toDataURL("image/jpeg");
-    setImage(croppedImageUrl);
-    handleDialogClose();
   };
   const handlePaymentDetailsSubmit = async (e) => {
     // console.log("paymentDetailshandlePaymentDetailsSubmit", paymentDetails);
@@ -394,22 +335,7 @@ const PdfReportData = ({
       })
       .catch((error) => console.error("Error saving bullet points:", error));
   };
-  const handleSaveLogo = async () => {
-    if (!image) {
-      return;
-    }
-    console.log("imageIs", image);
-    try {
-      const response = await axios.post(`${URI}/upload-base64`, { image: image });
-      console.log("handleSaveLogoresponse ", response);
-      setUploadedImageUrl(response.data.imageUrl);
-      alert("Image uploaded successfully!");
-      return response;
-    } catch (error) {
-      console.error("uploadFail", error);
-      alert("Image upload failed!");
-    }
-  };
+
   const handleKeyDown = (event, index) => {
     if (event.key === "Enter") {
       handleSaveEdit(index);
@@ -443,133 +369,43 @@ const PdfReportData = ({
     setBulletPointsVisible(false);
   };
   const orderedBulletPoints = orderBulletPoints(bulletPoints);
+  useEffect(() => {
+    // Fetch image URL from the API
+    axios
+      .get(`${URI}/getImageLogo`)
+      .then((response) => {
+        const fullImageUrl = `${noApi}${response.data.url}`;
+        console.log("fullImageUrl ", fullImageUrl);
+        setImage(fullImageUrl);
+      })
+      .catch((error) => {
+        console.error("Error fetching the image URL:", error);
+      });
+  }, []);
+  console.log("myImage", image);
   return (
     <div>
-      <div>
+      <div className="bullet-points-main">
         <Button
+          onClick={handleBulletPointsOpen}
           variant="contained"
           color="primary"
-          onClick={handleDialogImagePreviewerOpen}
+          style={{ textTransform: "none", fontSize: "16px" }}
+          startIcon={<AddIcon />}
         >
-          Open Image Editor
+          Add Terms & Conditions
         </Button>
-
-        <Dialog
-          open={dialogImagePreviewerOpen}
-          onClose={handleDialogImagePreviewerClose}
-          maxWidth="md"
-          fullWidth
-        >
-          <DialogContent>
-            <Box sx={{ maxWidth: 800, margin: "auto", textAlign: "center" }}>
-              <CloseButton
-                className="dialog-image-previewer-close-button"
-                onClick={handleDialogImagePreviewerClose}
-              />
-              <Typography variant="h4" gutterBottom>
-                Image Editor
-              </Typography>
-              {!image && (
-                <Box
-                  {...getRootProps()}
-                  sx={{
-                    border: "2px dashed #ccc",
-                    borderRadius: 2,
-                    padding: 4,
-                    cursor: "pointer",
-                    "&:hover": { borderColor: "primary.main" },
-                  }}
-                >
-                  <input {...getInputProps()} />
-                  {isDragActive ? (
-                    <p>Drop the files here ...</p>
-                  ) : (
-                    <p>
-                      Drag 'n' drop some files here, or click to select files
-                    </p>
-                  )}
-                </Box>
-              )}
-              {image && (
-                <Grid container spacing={2} justifyContent="center">
-                  <Grid item xs={12}>
-                    <img
-                      src={image}
-                      alt="Uploaded"
-                      style={{ maxWidth: "100%", cursor: "pointer" }}
-                      onClick={handleDialogOpen}
-                    />
-                  </Grid>
-                  <Grid item xs={12}></Grid>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={handleSaveLogo}
-                  >
-                    SaveImages
-                  </Button>
-                  <Grid item xs={12}>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={handleClearImage}
-                    >
-                      Clear Image
-                    </Button>
-                  </Grid>
-                </Grid>
-              )}
-
-              <Dialog
-                open={dialogOpen}
-                onClose={handleDialogClose}
-                maxWidth="md"
-                fullWidth
-              >
-                <DialogContent>
-                  <Box sx={{ textAlign: "center" }}>
-                    <ReactCrop
-                      src={image}
-                      crop={crop}
-                      onChange={(newCrop) => setCrop(newCrop)}
-                      onComplete={(c) => setCompletedCrop(c)}
-                      style={{ maxWidth: "100%", maxHeight: 400 }}
-                    >
-                      <img
-                        ref={imgRef}
-                        src={image}
-                        alt="Crop me"
-                        style={{ maxWidth: "100%" }}
-                      />
-                    </ReactCrop>
-                  </Box>
-                </DialogContent>
-                <Button
-                  onClick={handleSaveCrop}
-                  color="primary"
-                  variant="contained"
-                >
-                  Save changes
-                </Button>
-                <Button onClick={handleDialogClose} color="primary">
-                  Close
-                </Button>
-              </Dialog>
-            </Box>
-          </DialogContent>
-        </Dialog>
-      </div>
-      <div>
-        <Button onClick={handleBulletPointsOpen}>Terms & Conditons</Button>
         <Dialog
           open={isbulletPointsVisible}
           onClose={handleBulletPointsClose}
           maxWidth="md"
-          fullScreen
+          fullWidth
         >
-          <div className="bullet-points-box">
-            <CloseButton className="close-button" onClick={closeBulletPoints} />
-            <h1 style={{ width: "20vw" }}>Terms & Conditons</h1>
+          <div>
+            <button className="close-button" onClick={closeBulletPoints}>
+              <CloseIcon />
+            </button>
+
             <div>
               <BulletPoints
                 inputText={inputText}
@@ -591,19 +427,30 @@ const PdfReportData = ({
           </div>
         </Dialog>
       </div>
-      <div>
-        <Button onClick={handlePaymentDetailsOpen}>ShowPayment</Button>
+      <div className="payment-details-main">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handlePaymentDetailsOpen}
+          style={{ textTransform: "none", fontSize: "16px" }}
+          startIcon={<AddIcon />}
+        >
+          Add Payment Details
+        </Button>
         <Dialog
           open={paymentDetailsOpen}
           onClose={handlePaymentDetailsClose}
           maxWidth="md"
           fullWidth
         >
-          <div className="payment-details-box">
-            <CloseButton
+          <div>
+            <button
               className="close-button"
               onClick={handlePaymentDetailsClose}
-            />
+            >
+              <CloseIcon />
+            </button>
+
             <div>
               <PaymentDetails
                 handlePaymentDetailsSubmit={handlePaymentDetailsSubmit}
@@ -614,53 +461,88 @@ const PdfReportData = ({
           </div>
         </Dialog>
       </div>
+      <DownloadPdf />
       {shareUrl && (
         <div>
-          <button onClick={togglePopup}>
+          <Button variant="contained" onClick={togglePopup}>
             <ShareIcon />
-          </button>
-          {isPopupVisible && (
-            <div className="popup">
-              <button onClick={togglePopup}>
-                <CloseIcon />
-              </button>
-              <div className="popup-content">
-                <button onClick={() => sharePDF("whatsapp")}>
-                  <WhatsAppIcon />
-                </button>
-                <button onClick={() => sharePDF("gmail")}>
-                  {" "}
-                  <GmailIcon />
-                </button>
-                <button onClick={() => sharePDF("telegram")}>
-                  {" "}
-                  <TelegramIcon />
+            share
+          </Button>
+          <Dialog open={isPopupVisible} onClose={togglePopup}>
+            <div className="share-modal">
+              <div className="share-modal-header">
+                <h2>Share</h2>
+                <button className="close-btn" onClick={togglePopup}>
+                  <CloseIcon />
                 </button>
               </div>
+              <div className="share-modal-content">
+                <div className="popup-content">
+                  <button
+                    onClick={() => sharePDF("whatsapp")}
+                    className="share-button"
+                  >
+                    <WhatsAppIcon />
+                  </button>
+                  <button
+                    onClick={() => sharePDF("gmail")}
+                    className="share-button"
+                  >
+                    <GmailIcon />
+                  </button>
+                  <button
+                    onClick={() => sharePDF("telegram")}
+                    className="share-button"
+                  >
+                    <TelegramIcon />
+                  </button>
+                </div>
+              </div>
             </div>
-          )}
+          </Dialog>
         </div>
       )}
-      <DownloadPdf />
-      <h1>Pdf report</h1>
-      <PDFViewer style={{ width: "100%", height: "100vh" }}>
-        <PDfReport
-          itemsInPiecesList={itemsInPiecesList}
-          image={image}
-          sampleLogo={sampleLogo}
-          billNo={billNo}
-          customerInfo={customerInfo}
-          shipmentInfo={shipmentInfo}
-          gstList={gstList}
-          gstTotalFInalListMap={gstTotalFInalListMap}
-          gstCellContainerValueMap={gstCellContainerValueMap}
-          gstTotalValues={gstTotalValues}
-          gstTotalList={gstTotalList}
-          termsOfSale={termsOfSale}
-          paymentDetailsInfo={paymentDetailsInfo}
-          orderedBulletPoints={orderedBulletPoints}
-        />
-      </PDFViewer>
+      <div>
+        <Button
+          variant="contained"
+          onClick={togglePdfVisibility}
+          style={{ backgroundColor: "#6f42c1", color: "#fff" }} // Assuming you want white text
+        >
+          {isPdfVisible ? <FaEyeSlash /> : <FaEye />} View My Invoice Report
+        </Button>
+        <div style={{ marginTop: "20px" }}>
+          {isPdfVisible && (
+            <PDFViewer style={{ width: "100%", height: "100vh" }}>
+              <PDfReport
+                myCompany={myCompany}
+                shipmentDetails={shipmentDetails}
+                itemsInPiecesList={itemsInPiecesList}
+                image={image}
+                sampleLogo={sampleLogo}
+                billNo={billNo}
+                customerInfo={customerInfo}
+                shipmentInfo={shipmentInfo}
+                gstList={gstList}
+                gstTotalFInalListMap={gstTotalFInalListMap}
+                gstCellContainerValueMap={gstCellContainerValueMap}
+                gstTotalValues={gstTotalValues}
+                gstTotalList={gstTotalList}
+                termsOfSale={termsOfSale}
+                paymentDetailsInfo={paymentDetailsInfo}
+                orderedBulletPoints={orderedBulletPoints}
+                customerDetails={customerDetails}
+                items={items}
+                invoiceDate={invoiceDate}
+                dueDate={dueDate}
+                discountAmount={discountAmount}
+                formatDate={formatDate}
+                invoiceType={invoiceType}
+                paymentDetails={paymentDetails}
+              />
+            </PDFViewer>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

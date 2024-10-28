@@ -7,9 +7,10 @@ function App() {
     <Billingapp />
     // <Router>
     //   <Routes>
-    //     {/* <Route path="/home" element={<Billingapp />} /> */}
+    //     <Route path="/" element={<Introduction />} />
 
-    //     <Route path="/" element={<Billingapp />} />
+    //     {/* <Route path="/" element={<Billingapp />} /> */}
+    //     <Route path="/home" element={<Billingapp />} />
     //   </Routes>
     // </Router>
   );

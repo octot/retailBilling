@@ -1,0 +1,9 @@
+.invoice-details-main {
+  margin-top: -45px;
+  margin-left: 20px;
+  /* position: relative; */
+}
+.close-button-invoice {
+  margin-left: 93% !important;
+  border: none !important;
+}

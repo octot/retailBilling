@@ -15,6 +15,7 @@ import {
   CloseIcon,
   ShareIcon,
 } from "./icons";
+import { URI } from "./CONSTANTS";
 const PDFGenerator = () => {
   const [name, setName] = useState("");
   const [data, setData] = useState("");
@@ -45,13 +46,9 @@ const PDFGenerator = () => {
     // console.log('formData ', formData)
     // Upload PDF to backend
     try {
-      const response = await axios.post(
-        "http://localhost:3001/api/pdf/upload",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const response = await axios.post(`${URI}/pdf/upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       // Get the shareable URL from the backend response
       setShareUrl(response.data.shareUrl);
       // console.log('PDF generated and shareable URL:', response.data.shareUrl);

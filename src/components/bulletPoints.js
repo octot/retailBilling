@@ -1,10 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, TextField, Paper } from "@mui/material";
-import "./termsAndConditions.css";
-import { IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Remove } from "@mui/icons-material/Remove";
 import "../componentStyles/bulletPoints.css";
 const BulletPointInput = ({
   inputText,
@@ -23,103 +20,97 @@ const BulletPointInput = ({
   handleSave,
 }) => {
   return (
-    <div>
+    <div className="bullet-points-container">
+    <h1 className="dialog-title">Terms & Conditions</h1>
+    <div className="input-section">
       <TextField
-        style={{ width: "25vw" }}
+        className="bullet-point-input"
         value={inputText}
         onChange={handleInputChange}
         onKeyPress={handleKeyPress}
         placeholder="Type your Terms and Conditions..."
         variant="outlined"
+        fullWidth
       />
-      <Button onClick={handleSave}>Save Bullet Points</Button>
-      <div>
-        <Paper className="previewContainer">
-          <h3>Preview:</h3>
-          <ul>
-            {bulletPoints.map((point, index) => (
-              <li
-                key={index}
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap", // Wrap text if it exceeds
-                  alignItems: "center", // Vertically align items
-                  justifyContent: "space-between", // Space between text and icons
-                  padding: "10px 0", // Add some padding for each item
-                }}
-              >
-                {editingIndex === index ? (
-                  <input
-                    type="text"
-                    value={editText}
-                    onChange={(e) => setEditText(e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(e, index)}
-                    onBlur={() => handleSaveEdit(index)}
-                    style={{
-                      flex: 1, // Allow input to take the full width
-                      marginRight: "10px", // Add spacing between input and buttons
-                    }}
-                  />
-                ) : (
-                  <>
-                    <span
-                      style={{
-                        flex: 1, // Allow text to take up space
-                        wordBreak: "break-word", // Break long words
-                      }}
-                    >
-                      {point}
-                    </span>
-                    <div className="bullet-points-icons">
-                      <Button onClick={() => handleEditBulletPoint(index)}>
-                        <EditIcon />
-                      </Button>
-                      <Button onClick={() => handleRemoveBulletPoint(index)}>
-                        <DeleteIcon />
-                      </Button>
-                      <Button
-                        onClick={() => moveUp(index)}
-                        disabled={index === 0}
-                      >
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M12 2L4 10H8V22H16V10H20L12 2Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </Button>
-                      <Button
-                        onClick={() => moveDown(index)}
-                        disabled={index === bulletPoints.length - 1}
-                      >
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M12 22L20 14H16V2H8V14H4L12 22Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                      </Button>
-                    </div>
-                  </>
-                )}
-              </li>
-            ))}
-          </ul>
-        </Paper>
-      </div>
     </div>
+
+    <Paper className="preview-container">
+      <h3 className="preview-title">Preview:</h3>
+      <ul className="bullet-points-list">
+        {bulletPoints.map((point, index) => (
+          <li key={index} className="bullet-point-item">
+            {editingIndex === index ? (
+              <div className="edit-mode">
+                <TextField
+                  value={editText}
+                  onChange={(e) => setEditText(e.target.value)}
+                  onBlur={() => handleSaveEdit(index)}
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  className="edit-input"
+                />
+              </div>
+            ) : (
+              <>
+                <span className="bullet-point-text">{point}</span>
+                <div className="bullet-point-controls">
+                  <Button
+                    className="control-button edit-button"
+                    onClick={() => handleEditBulletPoint(index)}
+                  >
+                    <EditIcon />
+                  </Button>
+                  <Button
+                    className="control-button delete-button"
+                    onClick={() => handleRemoveBulletPoint(index)}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                  <Button
+                    className="control-button move-button"
+                    onClick={() => moveUp(index)}
+                    disabled={index === 0}
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12 2L4 10H8V22H16V10H20L12 2Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </Button>
+                  <Button
+                    className="control-button move-button"
+                    onClick={() => moveDown(index)}
+                    disabled={index === bulletPoints.length - 1}
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12 22L20 14H16V2H8V14H4L12 22Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </Button>
+                </div>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+    </Paper>
+  </div>
   );
 };
 
