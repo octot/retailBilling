@@ -1,7 +1,7 @@
 const path = require("path");
 // const noApi = "http://localhost:3001";
 
-const noApi = "http://shiroenterprise.onrender.com/";
+const noApi = "https://retailbilling.onrender.com/";
 
 const storePDF = (req, res) => {
   const file = req.file;
