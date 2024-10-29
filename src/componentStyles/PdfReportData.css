@@ -91,8 +91,8 @@
 }
 
 .share-modal {
- 
-
+  width: 20vw;
+  overflow-x: hidden;
 }
 
 .share-modal-header {
@@ -109,18 +109,17 @@
 .close-btn {
   background-color: transparent;
   border: none;
-  font-size: 24px;
   cursor: pointer;
 }
 
 .share-modal-content {
-  
+  width: 100vw;
+  /* height: 10vh; */
 }
 
 .popup-content {
+  text-align: center;
   display: flex;
-  justify-content: center;
- 
 }
 
 .share-button {
@@ -145,4 +144,11 @@
 
 .share-button.telegram {
   color: #0088cc;
+}
+.share-container {
+  margin-left: 13rem;
+  margin-top: -4rem;
+}
+.invoice-report-view-button {
+  margin-top: 1rem;
 }

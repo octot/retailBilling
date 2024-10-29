@@ -1,4 +1,4 @@
-import { useEffect, React, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   WhatsAppIcon,
   GmailIcon,
@@ -7,9 +7,8 @@ import {
   ShareIcon,
 } from "./icons";
 import { PDFViewer } from "@react-pdf/renderer";
-import termsOfSale from "../images/termsOfSale.jpg";
 import { pdf } from "@react-pdf/renderer";
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import "react-image-crop/dist/ReactCrop.css";
 import PDfReport from "../components/pdfReport";
 import {
@@ -23,18 +22,15 @@ import {
   getGstCellContainerValueMap,
   getPaymentDetails,
 } from "../Utils/pdfUtil";
-import { Box, Typography, Grid, Dialog } from "@mui/material";
-import sampleLogo from "../images/sampleLogo.jpeg";
+import { Dialog } from "@mui/material";
 import BulletPoints from "../components/bulletPoints";
 import PaymentDetails from "../components/PaymentDetails";
 import "../componentStyles/PdfReportData.css";
 import axios from "axios";
 import { URI, noApi } from "./CONSTANTS";
 import { StyledButton } from "./StyleButton";
-import CloseButton from "./CloseButton";
 import AddIcon from "@mui/icons-material/Add";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Using react-icons for the eye icon
-
 const PdfReportData = ({
   invoiceType,
   invoiceDate,
@@ -77,7 +73,6 @@ const PdfReportData = ({
   const [isbulletPointsVisible, setBulletPointsVisible] = useState(false);
   const [paymentDetailsOpen, setPaymentDetailsOpen] = useState(false);
   const [myCompany, setMyCompany] = useState([]);
-  const [error, setError] = useState(null);
   useEffect(() => {
     const fetchCompanyInfo = async () => {
       try {
@@ -88,7 +83,7 @@ const PdfReportData = ({
         const data = await response.json();
         setMyCompany(data);
       } catch (error) {
-        setError(error.message);
+        console.error("Error in fetchCompanyInfo:", error);
       }
     };
     fetchCompanyInfo();
@@ -125,25 +120,43 @@ const PdfReportData = ({
   };
   const setCustShipItemBillDetails = async () => {
     try {
-      const custShipItemBillDetailsData = await fetch(
-        `${URI}/setCustShipItemBillDetails`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(combinedDataOfCustShipItemBill),
-        }
-      );
-      const data = await custShipItemBillDetailsData.json();
-      // // // console.log("custShipItemBillDetailsData ", data)
+      // Ensure URI is defined
+      if (!URI) {
+        throw new Error("URI is not defined");
+      }
+      const response = await fetch(`${URI}/setCustShipItemBillDetails`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(combinedDataOfCustShipItemBill),
+      });
+
+      // Check if the response is successful
+      if (!response.ok) {
+        throw new Error(
+          `Server error: ${response.status} ${response.statusText}`
+        );
+      }
+
+      // Parse and return the response data
+      const data = await response.json();
+      console.log("custShipItemBillDetailsData", data);
+      return data;
     } catch (err) {
-      console.error(
-        "Failed to fetch data from setCustShipItemBillDetails ",
-        err
-      );
+      // Differentiate between network and server errors
+      if (err.name === "TypeError") {
+        console.error("Network error: Failed to fetch data", err);
+      } else {
+        console.error(
+          "Failed to fetch data from setCustShipItemBillDetails",
+          err
+        );
+      }
+      throw err; // Re-throw the error to be handled by the caller
     }
   };
+
   const generateBillNumber = async () => {
     try {
       const responseOfGeneratedBillNumber = await fetch(
@@ -207,7 +220,6 @@ const PdfReportData = ({
           shipmentDetails={shipmentDetails}
           itemsInPiecesList={itemsInPiecesList}
           image={image}
-          sampleLogo={sampleLogo}
           billNo={billNo}
           customerInfo={customerInfo}
           shipmentInfo={shipmentInfo}
@@ -216,7 +228,6 @@ const PdfReportData = ({
           gstCellContainerValueMap={gstCellContainerValueMap}
           gstTotalValues={gstTotalValues}
           gstTotalList={gstTotalList}
-          termsOfSale={termsOfSale}
           paymentDetailsInfo={paymentDetailsInfo}
           orderedBulletPoints={orderedBulletPoints}
           customerDetails={customerDetails}
@@ -263,7 +274,6 @@ const PdfReportData = ({
   };
   const handlePaymentDetailsSubmit = async (e) => {
     // // console.log("paymentDetailshandlePaymentDetailsSubmit", paymentDetails);
-
     e.preventDefault();
     try {
       const response = await fetch(`${URI}/bankDetails`, {
@@ -279,6 +289,7 @@ const PdfReportData = ({
       const fetchedData = await response.json();
       // // console.log("Success", fetchedData);
       alert("Saved Succesfully");
+      return fetchedData;
     } catch (error) {
       alert("Error Succesfully");
       console.error("Error ", error);
@@ -316,9 +327,9 @@ const PdfReportData = ({
     setBulletPoints(updateBulletPoints);
     setEditingIndex(null);
   };
-  const handleClearAll = () => {
-    setBulletPoints([]);
-  };
+  // const handleClearAll = () => {
+  //   setBulletPoints([]);
+  // };
   // // console.log("beforebulletPoints", bulletPoints);
   const handleSave = () => {
     fetch(`${URI}/bulletPoints`, {
@@ -344,7 +355,7 @@ const PdfReportData = ({
     }
   };
   const moveUp = (index) => {
-    if (index == 0) return;
+    if (index === 0) return;
     const newOrderPoints = [...bulletPoints];
     [newOrderPoints[index - 1], newOrderPoints[index]] = [
       newOrderPoints[index],
@@ -353,7 +364,7 @@ const PdfReportData = ({
     setBulletPoints(newOrderPoints);
   };
   const moveDown = (index) => {
-    if (index == BulletPoints.length - 1) return;
+    if (index === BulletPoints.length - 1) return;
     const newOrderPoints = [...bulletPoints];
     [newOrderPoints[index + 1], newOrderPoints[index]] = [
       newOrderPoints[index],
@@ -361,9 +372,9 @@ const PdfReportData = ({
     ];
     setBulletPoints(newOrderPoints);
   };
-  const toggleBulletPoints = () => {
-    setBulletPointsVisible(true);
-  };
+  // const toggleBulletPoints = () => {
+  //   setBulletPointsVisible(true);
+  // };
   const closeBulletPoints = () => {
     setBulletPointsVisible([]);
     setBulletPointsVisible(false);
@@ -463,7 +474,7 @@ const PdfReportData = ({
       </div>
       <DownloadPdf />
       {shareUrl && (
-        <div>
+        <div className="share-container">
           <Button variant="contained" onClick={togglePopup}>
             <ShareIcon />
             share
@@ -502,13 +513,13 @@ const PdfReportData = ({
           </Dialog>
         </div>
       )}
-      <div>
+      <div className="invoice-report-view-button">
         <Button
           variant="contained"
           onClick={togglePdfVisibility}
           style={{ backgroundColor: "#6f42c1", color: "#fff" }} // Assuming you want white text
         >
-          {isPdfVisible ? <FaEyeSlash /> : <FaEye />} View My Invoice Report
+          {isPdfVisible ? <FaEye /> : <FaEyeSlash />} View My Invoice Report
         </Button>
         <div style={{ marginTop: "20px" }}>
           {isPdfVisible && (
@@ -518,7 +529,6 @@ const PdfReportData = ({
                 shipmentDetails={shipmentDetails}
                 itemsInPiecesList={itemsInPiecesList}
                 image={image}
-                sampleLogo={sampleLogo}
                 billNo={billNo}
                 customerInfo={customerInfo}
                 shipmentInfo={shipmentInfo}
@@ -527,7 +537,6 @@ const PdfReportData = ({
                 gstCellContainerValueMap={gstCellContainerValueMap}
                 gstTotalValues={gstTotalValues}
                 gstTotalList={gstTotalList}
-                termsOfSale={termsOfSale}
                 paymentDetailsInfo={paymentDetailsInfo}
                 orderedBulletPoints={orderedBulletPoints}
                 customerDetails={customerDetails}
