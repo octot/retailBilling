@@ -1,8 +1,9 @@
 /* ToolIntro.css */
 .container {
   max-width: 1200px;
-  margin: 0px;
+  margin: -24px;
   padding: 2rem;
+  margin-left: 8rem;
 }
 
 /* Hero Section */
@@ -81,6 +82,7 @@
 .benefits {
   max-width: 32rem;
   margin: 0 auto 2rem auto;
+  margin-left: 26rem;
 }
 
 .benefit-item {

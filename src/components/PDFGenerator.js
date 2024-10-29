@@ -124,11 +124,9 @@ const PDFGenerator = () => {
                   <WhatsAppIcon />
                 </button>
                 <button onClick={() => sharePDF("gmail")}>
-                  {" "}
                   <GmailIcon />
                 </button>
                 <button onClick={() => sharePDF("telegram")}>
-                  {" "}
                   <TelegramIcon />
                 </button>
               </div>

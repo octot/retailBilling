@@ -41,8 +41,8 @@ const ToolIntro = () => {
 
         <div className="feature-card">
           <Wallet className="icon" />
-          <h3>Smart Tracking</h3>
-          <p>Automated payment reminders and tracking</p>
+          <h3>Invoice Customization</h3>
+          <p>Customize your options for terms, conditions, and payment details.</p>
         </div>
 
         <div className="feature-card">
@@ -70,7 +70,7 @@ const ToolIntro = () => {
       {/* CTA Button */}
       <div className="cta">
         <button className="cta-button" onClick={handleBilling}>
-          <span>Get Started Free</span>
+          <span>Get Started</span>
           <ArrowRight className="arrow-icon" />
         </button>
       </div>
