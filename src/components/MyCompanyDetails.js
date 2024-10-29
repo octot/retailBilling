@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import "../componentStyles/MyCompanyDetails.css";
 import { URI } from "./CONSTANTS";
 import ImageUpload from "./imageUploader";
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 const CompanyDetailsForm = () => {
   const [formData, setFormData] = useState({
     companyName: "Your Company Name",

@@ -1,5 +1,4 @@
-import React from 'react';
-import { CheckCircle, ArrowRight, RefreshCcw } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import '../componentStyles/ToolFlowGuide.css';
 
 const ToolFlowGuide = () => {

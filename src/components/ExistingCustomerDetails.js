@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createTheme,
   ThemeProvider,
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Container,
-  Typography,
   Button,
   TextField,
   Box,
@@ -105,11 +102,7 @@ function ExistingCustomerDetails({ refreshKey }) {
   //Pagination code
   const totalItems = filteredCustomers.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentData = filteredCustomers.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
+
   return (
     <ThemeProvider theme={theme}>
       <Container>

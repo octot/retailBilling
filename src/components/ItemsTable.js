@@ -1,18 +1,6 @@
-import React, { useState, useEffect } from "react";
-import {
-  Typography,
-  Container,
-  TextField,
-  Button,
-  Box,
-  Grid,
-  FormControl,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-} from "@mui/material";
+import { useState, useEffect } from "react";
+import { Container, Button, Grid, FormControl, RadioGroup, FormControlLabel, Radio } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { CloseIcon } from "./icons";
@@ -21,7 +9,6 @@ import GstForm from "./GstForm";
 import InvoiceDateDueDetails from "./invoiceDateDueDetails";
 import AddIcon from "@mui/icons-material/Add";
 import "../componentStyles/itemsTable.css";
-import CloseButton from "./CloseButton";
 const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
   const [items, setItems] = useState([
     {
@@ -45,9 +32,9 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
   const [gstType, setGstType] = useState("cgst_sgst"); // Set default to 'cgst_sgst'
   let [billNo, setBillNo] = useState("INV-2024-001");
   // console.log("gstTotalValuesState ", gstTotalValues)
-  const changeBillNo = (event) => {
-    setBillNo(event.target.value);
-  };
+  // const changeBillNo = (event) => {
+  //   setBillNo(event.target.value);
+  // };
   const handleChange = (index, field, value) => {
     const updatedItems = [...items];
     updatedItems[index][field] = value;

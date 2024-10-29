@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import ReactCrop from "react-image-crop";
-import CloseButton from "./CloseButton";
 import axios from "axios";
 import { URI } from "./CONSTANTS";
 import {
@@ -16,7 +15,6 @@ import AddIcon from "@mui/icons-material/Add";
 import { CloseIcon } from "./icons";
 const ImageUpload = () => {
   const [image, setImage] = useState(null);
-  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [crop, setCrop] = useState({ aspect: 16 / 9 });
   const [scale, setScale] = useState(1);
   const [completedCrop, setCompletedCrop] = useState(null);
@@ -34,8 +32,6 @@ const ImageUpload = () => {
       const response = await axios.post(`${URI}/upload-base64`, {
         image: image,
       });
-      // console.log("handleSaveLogoresponse ", response);
-      setUploadedImageUrl(response.data.imageUrl);
       alert("Image uploaded successfully!");
       return response;
     } catch (error) {

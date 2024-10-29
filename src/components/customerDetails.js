@@ -1,17 +1,8 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ExistingCustomerDetails from "./ExistingCustomerDetails";
-import {
-  TextField,
-  Button,
-  Container,
-  Typography,
-  ToggleButton,
-  Box,
-  ToggleButtonGroup,
-  Grid,
-} from "@mui/material";
+import { Button, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import "../componentStyles/customerDetails.css";
 import { URI } from "./CONSTANTS";
 import Popup from "./Popup";

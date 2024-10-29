@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
 import '../componentStyles/customerShipmentItemsBillRUD.css'
-import {
-    Checkbox, Button,
-    TextField, Table, TableCell, TableRow, TableHead, TableBody, Paper, TableContainer
-} from '@mui/material'
+import { Button, TextField, Table, TableCell, TableRow, TableHead, TableBody } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import { URI } from './CONSTANTS'
 const CustomerShipmentItemsBillRUD = () => {

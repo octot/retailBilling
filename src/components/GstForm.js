@@ -1,8 +1,5 @@
-import React from "react";
 import {
   Table,
-  Box,
-  Grid,
   TableContainer,
   Paper,
   TableHead,
@@ -11,14 +8,7 @@ import {
   TableBody,
   TextField,
 } from "@mui/material";
-import {
-  GstTotalFields,
-  CommonFields,
-  CgstSgstFields,
-  IgstFields,
-  RemoveButton,
-  AddRowButton,
-} from "./GstFormComponents";
+import { RemoveButton, AddRowButton } from "./GstFormComponents";
 import "../componentStyles/GstForm.css";
 const GstForm = ({
   gstType,
@@ -44,7 +34,7 @@ const GstForm = ({
             </TableCell>
             <TableCell className="invoice-table-header qty">qty</TableCell>
             <TableCell className="invoice-table-header rate">rate</TableCell>
-            {gstType == "cgst_sgst" ? (
+            {gstType === "cgst_sgst" ? (
               <>
                 <TableCell className="invoice-table-header cgst">
                   cgst
@@ -54,7 +44,12 @@ const GstForm = ({
                 </TableCell>
               </>
             ) : (
-              <TableCell className="invoice-table-header igst">igst</TableCell>
+              <>
+                <TableCell className="invoice-table-header cgst">
+                  igst
+                </TableCell>
+                
+              </>
             )}
             <TableCell className="invoice-table-header amount">
               Amount
@@ -125,7 +120,7 @@ const GstForm = ({
                   fullWidth
                 />
               </TableCell>
-              {gstType == "cgst_sgst" ? (
+              {gstType === "cgst_sgst" ? (
                 <>
                   <TableCell className="invoice-table-row">
                     <TextField

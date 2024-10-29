@@ -1,15 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  Grid,
-  Typography,
-  Container,
-  TextField,
-  Button,
-  Box,
-  Autocomplete,
-  IconButton,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { useState, useEffect } from "react";
+import { Grid, Typography, Container, TextField, Button, Box, Autocomplete } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 import { format } from "date-fns";
@@ -59,14 +49,7 @@ function B2B() {
       });
     }
   };
-  const handleSubmit = () => {
-    // Logic to save the form data
-    // console.log("Saved data:", {
-      // date,
-      // ...customerDetails,
-    // });
-  };
-  //shipment functions
+ 
   const [shipmentDetails, setShipmentDetails] = useState({
     customerName: "",
     address: "",
