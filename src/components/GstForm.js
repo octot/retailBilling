@@ -60,6 +60,7 @@ const GstForm = ({
             >
               Action
             </TableCell>
+            
           </TableRow>
         </TableHead>
         <TableBody>
@@ -206,17 +207,17 @@ const GstForm = ({
           <TableCell style={{ borderBottom: "none" }} />
           <TableCell style={{ borderBottom: "none" }} />
           <TableCell style={{ borderBottom: "none" }} />
-          <TableCell
+          {/* <TableCell
             style={{
-              textAlign: "right",
+              textAlign: "center",
               fontSize: "16px",
               fontWeight: "bold",
             }}
-            colSpan={2}
+            colSpan={3}
           >
             Invoice Total Inr
           </TableCell>
-          <TableCell>{gstTotalValues.invoiceTotalInr}</TableCell>
+          <TableCell>{gstTotalValues.invoiceTotalInr}</TableCell> */}
         </TableRow>
       </Table>
     </TableContainer>
