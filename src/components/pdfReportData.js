@@ -93,7 +93,7 @@ const PdfReportData = ({
     };
     fetchCompanyInfo();
   }, []);
-  console.log("myCompany", myCompany);
+  // console.log("myCompany", myCompany);
   const handleBulletPointsOpen = () => {
     setBulletPointsVisible(true);
   };
@@ -114,7 +114,7 @@ const PdfReportData = ({
     }));
   };
   const paymentDetailsInfo = getPaymentDetails(paymentDetails);
-  // console.log("paymentDetail s1111", paymentDetails);
+  // // console.log("paymentDetail s1111", paymentDetails);
   const combinedDataOfCustShipItemBill = {
     items: items,
     customerDetails: customerDetails,
@@ -136,7 +136,7 @@ const PdfReportData = ({
         }
       );
       const data = await custShipItemBillDetailsData.json();
-      // // console.log("custShipItemBillDetailsData ", data)
+      // // // console.log("custShipItemBillDetailsData ", data)
     } catch (err) {
       console.error(
         "Failed to fetch data from setCustShipItemBillDetails ",
@@ -196,7 +196,7 @@ const PdfReportData = ({
     try {
       if (!billNo) {
         billNo = await generateBillNumber();
-        // console.log("billNo", billNo);
+        // // console.log("billNo", billNo);
       }
       if (!billNo) {
         throw new Error("Failed to generate bill number");
@@ -241,7 +241,7 @@ const PdfReportData = ({
         console.error("Error uploading PDF:", error);
       }
       const url = URL.createObjectURL(pdfBlob);
-      // console.log("url ", url);
+      // // console.log("url ", url);
       const link = document.createElement("a");
       link.href = url;
       link.download = billNo;
@@ -262,7 +262,7 @@ const PdfReportData = ({
     );
   };
   const handlePaymentDetailsSubmit = async (e) => {
-    // console.log("paymentDetailshandlePaymentDetailsSubmit", paymentDetails);
+    // // console.log("paymentDetailshandlePaymentDetailsSubmit", paymentDetails);
 
     e.preventDefault();
     try {
@@ -277,7 +277,7 @@ const PdfReportData = ({
         throw new Error("Network response was not ok");
       }
       const fetchedData = await response.json();
-      // console.log("Success", fetchedData);
+      // // console.log("Success", fetchedData);
       alert("Saved Succesfully");
     } catch (error) {
       alert("Error Succesfully");
@@ -319,7 +319,7 @@ const PdfReportData = ({
   const handleClearAll = () => {
     setBulletPoints([]);
   };
-  // console.log("beforebulletPoints", bulletPoints);
+  // // console.log("beforebulletPoints", bulletPoints);
   const handleSave = () => {
     fetch(`${URI}/bulletPoints`, {
       method: "POST", // or 'PUT' if you are updating existing data
@@ -330,7 +330,7 @@ const PdfReportData = ({
     })
       .then((response) => response.json())
       .then((data) => {
-        // console.log("Bullet points saved:", data);
+        // // console.log("Bullet points saved:", data);
         // Optionally, you can update the UI or state based on the response
       })
       .catch((error) => console.error("Error saving bullet points:", error));
@@ -375,14 +375,14 @@ const PdfReportData = ({
       .get(`${URI}/getImageLogo`)
       .then((response) => {
         const fullImageUrl = `${noApi}${response.data.url}`;
-        console.log("fullImageUrl ", fullImageUrl);
+        // console.log("fullImageUrl ", fullImageUrl);
         setImage(fullImageUrl);
       })
       .catch((error) => {
         console.error("Error fetching the image URL:", error);
       });
   }, []);
-  console.log("myImage", image);
+  // console.log("myImage", image);
   return (
     <div>
       <div className="bullet-points-main">

@@ -32,9 +32,9 @@ const saveBase64Image = (base64Image, folder = "/tmp/uploads") => {
 
 const handleBase64Upload = async (req, res) => {
   try {
-    // console.log('req.bodyFromImage',req.body)
+    // // console.log('req.bodyFromImage',req.body)
     const base64Image = req.body.image;
-    console.log("base64Image", base64Image);
+    // console.log("base64Image", base64Image);
     const imagePath = saveBase64Image(base64Image);
     const image = new ImageModel({ url: `/uploads/${imagePath}` });
     await image.save();
@@ -44,7 +44,7 @@ const handleBase64Upload = async (req, res) => {
     });
   } catch (error) {
     console.error("Error uploading image:", error);
-    console.log("errorFrom", error);
+    // console.log("errorFrom", error);
     res.status(500).json({ error: "Image upload failed" });
   }
 };

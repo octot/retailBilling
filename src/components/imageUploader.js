@@ -29,12 +29,12 @@ const ImageUpload = () => {
     if (!image) {
       return;
     }
-    console.log("imageIs", image);
+    // console.log("imageIs", image);
     try {
       const response = await axios.post(`${URI}/upload-base64`, {
         image: image,
       });
-      console.log("handleSaveLogoresponse ", response);
+      // console.log("handleSaveLogoresponse ", response);
       setUploadedImageUrl(response.data.imageUrl);
       alert("Image uploaded successfully!");
       return response;

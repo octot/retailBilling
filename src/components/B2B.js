@@ -61,10 +61,10 @@ function B2B() {
   };
   const handleSubmit = () => {
     // Logic to save the form data
-    console.log("Saved data:", {
-      date,
-      ...customerDetails,
-    });
+    // console.log("Saved data:", {
+      // date,
+      // ...customerDetails,
+    // });
   };
   //shipment functions
   const [shipmentDetails, setShipmentDetails] = useState({

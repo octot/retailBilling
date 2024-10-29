@@ -39,9 +39,9 @@ mongoose.connect(mongoURI, {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
-  console.log("Connected to MongoDB successfully!");
+  // console.log("Connected to MongoDB successfully!");
 });
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  // console.log(`Server running on port ${port}`);
+  // // console.log(`Server running on port ${port}`);
 });
