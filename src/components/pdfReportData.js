@@ -27,7 +27,7 @@ import BulletPoints from "../components/bulletPoints";
 import PaymentDetails from "../components/PaymentDetails";
 import "../componentStyles/PdfReportData.css";
 import axios from "axios";
-import { URI, noApi } from "./CONSTANTS";
+import { URI } from "./CONSTANTS";
 import { StyledButton } from "./StyleButton";
 import AddIcon from "@mui/icons-material/Add";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Using react-icons for the eye icon
@@ -48,7 +48,7 @@ const PdfReportData = ({
   const togglePdfVisibility = () => {
     setIsPdfVisible(!isPdfVisible);
   };
-  const [image, setImage] = useState(null);
+  // const [image, setImage] = useState(null);
   const itemsInPiecesList = itemsToParts(items, 10);
   const customerInfo = getCustomerInfo(customerDetails, date);
   const shipmentInfo = getShipmentInfo(shipmentDetails, date);
@@ -219,7 +219,7 @@ const PdfReportData = ({
           myCompany={myCompany}
           shipmentDetails={shipmentDetails}
           itemsInPiecesList={itemsInPiecesList}
-          image={image}
+          // image={image}
           billNo={billNo}
           customerInfo={customerInfo}
           shipmentInfo={shipmentInfo}
@@ -380,13 +380,14 @@ const PdfReportData = ({
     setBulletPointsVisible(false);
   };
   const orderedBulletPoints = orderBulletPoints(bulletPoints);
+  /*
   useEffect(() => {
     // Fetch image URL from the API
     axios
       .get(`${URI}/getImageLogo`)
       .then((response) => {
         const fullImageUrl = `${noApi}${response.data.url}`;
-        // console.log("fullImageUrl ", fullImageUrl);
+        console.log("fullImageUrl ", fullImageUrl);
         setImage(fullImageUrl);
       })
       .catch((error) => {
@@ -394,6 +395,7 @@ const PdfReportData = ({
       });
   }, []);
   // console.log("myImage", image);
+  */
   return (
     <div>
       <div className="bullet-points-main">
@@ -528,7 +530,7 @@ const PdfReportData = ({
                 myCompany={myCompany}
                 shipmentDetails={shipmentDetails}
                 itemsInPiecesList={itemsInPiecesList}
-                image={image}
+                // image={image}
                 billNo={billNo}
                 customerInfo={customerInfo}
                 shipmentInfo={shipmentInfo}

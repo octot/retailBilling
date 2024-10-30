@@ -48,7 +48,7 @@ router.get("/api/getCompany", async (req, res) => {
     const company = await Company.findOne({}).sort({ updatedAt: -1 }); // Sort by updatedAt in descending order
     if (company) {
       res.json(company);
-      console.log("company ", company);
+      // console.log("company ", company);
     } else {
       res.status(404).json({ message: "Company not found" });
     }

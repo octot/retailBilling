@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../componentStyles/MyCompanyDetails.css";
 import { URI } from "./CONSTANTS";
-import ImageUpload from "./imageUploader";
+// import ImageUpload from "./imageUploader";
 import { Button } from "@mui/material";
 const CompanyDetailsForm = () => {
   const [formData, setFormData] = useState({
@@ -63,7 +63,9 @@ const CompanyDetailsForm = () => {
           <form onSubmit={handleSubmit}>
             <div className="form-grid">
               <div className="form-group">
-                <label htmlFor="companyName">Company Name<span style={{ color: "red" }}>*</span></label>
+                <label htmlFor="companyName">
+                  Company Name<span style={{ color: "red" }}>*</span>
+                </label>
                 <input
                   type="text"
                   id="companyName"
@@ -75,7 +77,9 @@ const CompanyDetailsForm = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="gstNumber">GST Number<span style={{ color: "red" }}>*</span></label>
+                <label htmlFor="gstNumber">
+                  GST Number<span style={{ color: "red" }}>*</span>
+                </label>
                 <input
                   type="text"
                   id="gstNumber"
@@ -87,7 +91,9 @@ const CompanyDetailsForm = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="address">Company Address<span style={{ color: "red" }}>*</span></label>
+                <label htmlFor="address">
+                  Company Address<span style={{ color: "red" }}>*</span>
+                </label>
                 <textarea
                   id="address"
                   name="address"
@@ -99,7 +105,9 @@ const CompanyDetailsForm = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="phone">Phone Number<span style={{ color: "red" }}>*</span></label>
+                <label htmlFor="phone">
+                  Phone Number<span style={{ color: "red" }}>*</span>
+                </label>
                 <input
                   type="tel"
                   id="phone"
@@ -111,7 +119,9 @@ const CompanyDetailsForm = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="email">Email Address<span style={{ color: "red" }}>*</span></label>
+                <label htmlFor="email">
+                  Email Address<span style={{ color: "red" }}>*</span>
+                </label>
                 <input
                   type="email"
                   id="email"
@@ -121,9 +131,11 @@ const CompanyDetailsForm = () => {
                   required
                 />
               </div>
+              {/*
               <div className="form-group image-position">
                 <ImageUpload />
               </div>
+              */}
             </div>
             <Button type="submit" className="submit-button">
               Save Company Details

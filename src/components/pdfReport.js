@@ -1,6 +1,6 @@
 import {
   Font,
-  Image,
+  // Image,
   Document,
   Page,
   Text,
@@ -123,7 +123,7 @@ const PdfReport = ({
   itemsInPieces,
   shipmentDetails,
   itemsInPiecesList,
-  image,
+  // image,
   sampleLogo,
   billNo,
   customerInfo,
@@ -137,7 +137,7 @@ const PdfReport = ({
   orderedBulletPoints,
   customerDetails,
 }) => {
-  console.log(typeof paymentDetailsInfo);
+  // console.log(typeof paymentDetailsInfo);
 
   return (
     <Document>
@@ -145,12 +145,14 @@ const PdfReport = ({
         {/* Header Section */}
         <View style={styles.headerContainer}>
           <View style={styles.logoSection}>
+            {/*
             {image && (
               <Image
                 style={styles.logo}
                 src={image} // Use the image URL here
               />
             )}
+            */}
             <Text>{myCompany.companyName || "Company Name"}</Text>
             <Text>{myCompany.gstNumber || "GST: 27XXXXXXXXXXXXXX"}</Text>
           </View>
@@ -325,51 +327,6 @@ const PdfReport = ({
           </View>
         </View>
       </Page>
-
-      {/*   
-            {paymentDetailsInfo[0].value && (
-        <Page size="A4" style={styles.page}>
-          <View style={styles.termsOfSalePaymentDetailsContainer}>
-            <View style={styles.paymentDetailsContainer}>
-              <Text style={{ textAlign: "center" }}>Payment Details</Text>
-              {paymentDetailsInfo.map((info, index) => (
-                <View
-                  style={styles.detailSectionPaymentDetailsInfo}
-                  key={index}
-                >
-                  <>
-                    <Text style={styles.paymentDetailsInfoAttributeKey}>
-                      {info.label}:
-                    </Text>
-                    <Text style={styles.paymentDetailsInfoAttributeValue}>
-                      {" "}
-                      {info.value}{" "}
-                    </Text>
-                  </>
-                </View>
-              ))}
-            </View>
-          </View>
-        </Page>
-      )}
-      {orderedBulletPoints && orderedBulletPoints.length > 0 && (
-        // // console.log('orderedBulletPoints.length ', orderedBulletPoints.length),
-        <Page size="A4" style={styles.page}>
-          <View style={styles.termsOfSaleContainer}>
-            <Text style={{ textAlign: "center", fontSize: "36" }}>
-              Terms & Conditions
-            </Text>
-            {orderedBulletPoints.map((info, index) => (
-              <View style={styles.detailTermsOfSaleContainer} key={index}>
-                <Text style={styles.detailTermsOfSaleContainerAttributeKey}>
-                  {info}
-                </Text>
-              </View>
-            ))}
-          </View>
-        </Page>
-      )}
-        */}
     </Document>
   );
 };

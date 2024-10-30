@@ -1,8 +1,8 @@
 const ImageModel = require("../model/ImageSchema");
 const fs = require("fs");
 const path = require("path");
-/*
-for localhost
+
+// for localhost
 const saveBase64Image = (base64Image, folder = "uploads") => {
   const matches = base64Image.match(/^data:(.+);base64,(.+)$/);
   const ext = matches[1].split("/")[1]; // Get image extension (e.g., jpeg, png)
@@ -13,7 +13,10 @@ const saveBase64Image = (base64Image, folder = "uploads") => {
   return fileName;
 };
 
-*/
+
+
+/*
+
 const saveBase64Image = (base64Image, folder = "/tmp/uploads") => {
   const matches = base64Image.match(/^data:(.+);base64,(.+)$/);
   const ext = matches[1].split("/")[1];
@@ -29,6 +32,9 @@ const saveBase64Image = (base64Image, folder = "/tmp/uploads") => {
   fs.writeFileSync(filePath, buffer);
   return fileName;
 };
+
+*/
+
 
 const handleBase64Upload = async (req, res) => {
   try {
