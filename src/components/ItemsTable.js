@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
-import { Container, Button, Grid, FormControl, RadioGroup, FormControlLabel, Radio } from "@mui/material";
+import {
+  Container,
+  Button,
+  Grid,
+  FormControl,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -103,58 +111,59 @@ const ItemsTable = ({ customerDetails, date, shipmentDetails }) => {
     const updatedItems = items.filter((_, i) => i !== index);
     setItems(updatedItems);
   };
-  function gstTotalCalculation(items) {
-    // console.log("gstTotalCalculation ", items)
-    let gstTotal = {};
-    let [
-      cgstTotal,
-      sgstTotal,
-      igstTotal,
-      rateTotal,
-      gstTotalSum,
-      roundOff,
-      invoiceTotalInr,
-    ] = [0, 0, 0, 0, 0, 0, 0];
-    for (let i = 0; i < items.length; i++) {
-      if (gstType === "cgst_sgst") {
-        cgstTotal += items[i].cgstAmount;
-        sgstTotal += items[i].sgstAmount;
-      }
-      if (gstType === "igst") {
-        igstTotal += items[i].igstAmount;
-      }
-      rateTotal += items[i].total;
-    }
-    if (igstTotal > 0) {
-      gstTotalSum = igstTotal;
-    } else {
-      gstTotalSum = cgstTotal + sgstTotal;
-    }
-    roundOff = Math.round(rateTotal);
-    invoiceTotalInr = roundOff + gstTotalSum;
-    cgstTotal = Number(cgstTotal.toFixed(2));
-    sgstTotal = Number(sgstTotal.toFixed(2));
-    igstTotal = Number(igstTotal.toFixed(2));
-    gstTotalSum = Number(gstTotalSum.toFixed(2));
-    roundOff = Number(roundOff.toFixed(2));
-    invoiceTotalInr = Number(invoiceTotalInr.toFixed(2));
-    rateTotal = Number(rateTotal.toFixed(2));
-    gstTotal = {
-      cgstTotal,
-      sgstTotal,
-      igstTotal,
-      rateTotal,
-      gstTotalSum,
-      roundOff,
-      invoiceTotalInr,
-    };
-    console.log("output from gstTotal ", gstTotal);
-    return gstTotal;
-  }
+
   useEffect(() => {
+    const gstTotalCalculation = (items) => {
+      // console.log("gstTotalCalculation ", items)
+      let gstTotal = {};
+      let [
+        cgstTotal,
+        sgstTotal,
+        igstTotal,
+        rateTotal,
+        gstTotalSum,
+        roundOff,
+        invoiceTotalInr,
+      ] = [0, 0, 0, 0, 0, 0, 0];
+      for (let i = 0; i < items.length; i++) {
+        if (gstType === "cgst_sgst") {
+          cgstTotal += items[i].cgstAmount;
+          sgstTotal += items[i].sgstAmount;
+        }
+        if (gstType === "igst") {
+          igstTotal += items[i].igstAmount;
+        }
+        rateTotal += items[i].total;
+      }
+      if (igstTotal > 0) {
+        gstTotalSum = igstTotal;
+      } else {
+        gstTotalSum = cgstTotal + sgstTotal;
+      }
+      roundOff = Math.round(rateTotal);
+      invoiceTotalInr = roundOff + gstTotalSum;
+      cgstTotal = Number(cgstTotal.toFixed(2));
+      sgstTotal = Number(sgstTotal.toFixed(2));
+      igstTotal = Number(igstTotal.toFixed(2));
+      gstTotalSum = Number(gstTotalSum.toFixed(2));
+      roundOff = Number(roundOff.toFixed(2));
+      invoiceTotalInr = Number(invoiceTotalInr.toFixed(2));
+      rateTotal = Number(rateTotal.toFixed(2));
+      gstTotal = {
+        cgstTotal,
+        sgstTotal,
+        igstTotal,
+        rateTotal,
+        gstTotalSum,
+        roundOff,
+        invoiceTotalInr,
+      };
+      console.log("output from gstTotal ", gstTotal);
+      return gstTotal;
+    };
     let gstTotalAdded = gstTotalCalculation(items);
     setGstTotalValues(gstTotalAdded);
-  }, [items]);
+  }, [items,gstType]);
   const invoiceHeaders = [
     { id: "itemName", label: "Item Name", align: "left" },
     { id: "description", label: "Description", align: "left" },
